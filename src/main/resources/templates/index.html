@@ -5,6 +5,7 @@
     <title>community</title>
     <!--注意:这里的link需要加 rel="stylesheet",否则没有样式-->
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/community.css"/>
     <script th:src="@{jquery/jquery-3.3.1.min.js}" src="jquery/jquery-3.3.1.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
 </head>
@@ -38,9 +39,10 @@
             </form>
             <!--登录-->
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://github.com/login/oauth/authorize?client_id=77b3bd8c926cc4119711&redirect_uri=http://localhost:8080/callback&scope=user">登录</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我<span class="caret"></span></a>
+                <li th:if="${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=77b3bd8c926cc4119711&redirect_uri=http://localhost:8080/callback&scope=user">登录</a></li>
+                <li th:if="${session.user != null}"><a href="/publish">提问</a></li>
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="#" th:text="${session.user.getName()}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">信息中心</a></li>
                         <li><a href="#">个人资料</a></li>
@@ -51,6 +53,33 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+<hr/>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-xs-12 col-sm-12 col-md-12">
+            <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 发现</h2>
+            <hr/>
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object" src="https://avatars1.githubusercontent.com/u/48481596?v=4" alt="avatar">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">看视频不仅仅是为了学习</h4>
+                    你学懂了吗？？？
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-12 col-sm-12 col-md-12">
+            <h2>学习就是:</h2><br/>
+            <h4>发现问题</h4><br/>
+            <h4>查询问题</h4><br/>
+            <h4>解决问题</h4><br/>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>

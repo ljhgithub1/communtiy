@@ -1,0 +1,15 @@
+
+body{
+    background-color: #efefef;
+}
+.main{
+    margin: 40px 80px 0px 80px;
+    background-color: white;
+}
+/*
+ 在别人的样式上面直接更改
+*/
+.media-object{
+    width:  40px;
+    height: 40px;
+}

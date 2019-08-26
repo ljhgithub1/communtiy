@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>publish</title>
+    <!--注意:这里的link需要加 rel="stylesheet",否则没有样式-->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/community.css"/>
+    <script th:src="@{jquery/jquery-3.3.1.min.js}" src="jquery/jquery-3.3.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!--顶部导航条-->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">狼腾社区</a>
+        </div>
+
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <!--保留位置-->
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">位置1<span class="sr-only">(current)</span></a></li>
+                <li><a href="#">位置2</a></li>
+            </ul>
+            <!--查询-->
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">查询</button>
+            </form>
+            <!--登录-->
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=77b3bd8c926cc4119711&redirect_uri=http://localhost:8080/callback&scope=user">登录</a></li>
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="#" th:text="${session.user.getName()}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">信息中心</a></li>
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">退出登录</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<!-- 正文 -->
+<div class="container-fluid main">
+    <div class="row">
+
+        <!--发布区-->
+        <div class="col-lg-9 col-xs-12 col-sm-12 col-md-12">
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起</h2>
+            <hr/>
+            <form action="/publish" method="post">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h4><label for="title">问题标题(简明扼要:)</label></h4>
+                        </div>
+                        <div class="col-lg-5"><h4 th:if="${titleError != null}" style="color: red;" th:text="${titleError}"></h4></div>
+                    </div>
+                    <!--
+                     对于 input 做回显 ----》使用 th:value
+
+                     注意： 这里使用 th:text=${}  会跳一格输出
+                           这里需要使用 th:value=${}
+                    -->
+                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题..." th:value="${title}"/>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <h4><label for="description">问题补充(必填:请参照右边提示)</label></h4>
+                        </div>
+                        <div class="col-lg-5"><h4 th:if="${descriptionError != null}" style="color: red;" th:text="${descriptionError}"></h4>
+                        </div>
+                    </div>
+                    <textarea class="form-control" rows="25" id="description" name="description" th:text="${description}"></textarea>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <h4><label for="tag">添加标签:</label></h4>
+                        </div>
+                        <div class="col-lg-5"><h4 th:if="${tagError != null}" style="color: red;" th:text="${tagError}"></h4>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control" id="tag" name="tag" placeholder="多个标签使用逗号隔开" th:text="${tag}">
+                </div>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="alert alert-danger" role="alert" th:if="${msg != null}"></div>
+                    </div>
+                    <div class="col-lg-offset-2 col-lg-1">
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--提示区-->
+        <div class="col-lg-3 col-xs-12 col-sm-12 col-md-12">
+            <h2>问题发起指南:</h2>
+            》 问题标题: 请用精简的语言描述您发布的问题，不超过25个字<br/>
+            》 问题补充: 详细补充您的问题内容，并确保问题描述清晰直观，并提供一些相关的资料<br/>
+            》 选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字<br/>
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

@@ -2,8 +2,9 @@ package life.langteng.community.provider;
 
 import com.alibaba.fastjson.JSON;
 import life.langteng.community.dto.GithubAccessTokenDTO;
-import life.langteng.community.entity.GithutUser;
+import life.langteng.community.dto.GithutUser;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -22,20 +23,19 @@ import java.io.IOException;
 @Component
 public class GithubProvider {
 
-    private final String url = "https://github.com/login/oauth/access_token";
-
-    private final String client_id = "77b3bd8c926cc4119711";
-
-    private final String client_secret = "38afe716285836696e29ed490b64079c5200daa0";
-
-    private final String redirect_uri = "http://localhost:8080/callback";
-
-    private final String media_type = "application/json; charset=utf-8";
+    @Value("${github.url}")
+    private  String url;
+    @Value("${github.client.id}")
+    private  String client_id;
+    @Value("${github.client.secret}")
+    private  String client_secret;
+    @Value("${github.redirect.uri}")
+    private  String redirect_uri;
 
 
 
     /**
-     *
+     * 通过 github 回传给我们的code 获取 access_token
      * @param code
      * @param state
      * @return
@@ -55,8 +55,9 @@ public class GithubProvider {
         // 注意这里的 Redirect_uri 是我们注册 OAuth application 时，指定的url
         tokenDTO.setRedirect_uri(redirect_uri);
 
-        MediaType mediaType = MediaType.get(media_type);
+        MediaType mediaType = MediaType.get("application/json; charset=utf-8");
 
+        // 获取 OkHttpClient 对象，并通过该对象发起http请求
         OkHttpClient client = new OkHttpClient();
 
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(tokenDTO));
@@ -79,11 +80,7 @@ public class GithubProvider {
 
 
     /**
-     *
-     *
-     *
-     *
-     *
+     *  通过 access_token 获取用户信息
      * @param access_token
      * @return
      */
