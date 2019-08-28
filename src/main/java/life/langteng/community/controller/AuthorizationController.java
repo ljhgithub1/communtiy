@@ -21,12 +21,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * 登录
+ * github 认证登录
+ *
  * @author 宝哥
  * @date 2019/8/24
  */
 @Controller
-public class LoginController {
+public class AuthorizationController {
 
     @Autowired
     private GithubProvider githubProvider;
@@ -73,62 +74,6 @@ public class LoginController {
     }
 
 
-    /**
-     * 默认到index页面
-     * @return
-     */
-    @RequestMapping("/")
-    public String index(HttpServletRequest request,@CookieValue(name = "token",required = false)Cookie cookie){
-
-        /**
-         * new  user @CookieValue
-         *
-         * 通过 @CookieValue 可以 直接获取我们制定名称的cookie
-         *
-         */
-        if(cookie == null){
-            return "index";
-        }
-        String value = cookie.getValue();
-        // 去数据库中查找是否存在用户的token和该token相同，如果有就直接将用户信息保存到session中，否则就跳过
-        User user = userService.getUserByToken(value);
-        if (user != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user",user);
-        }
-
-
-
-
-
-
-
-        /**
-         * old
-         */
-        /*// 如果用户的浏览器中存在该用户登录过的信息，就直接登录
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies == null || cookies.length <= 0) {
-            return "index";
-        }
-
-        for (Cookie cookie : cookies) {
-            if (token.equals(cookie.getName())) {
-                String value = cookie.getValue();
-                // 去数据库中查找是否存在用户的token和该token相同，如果有就直接将用户信息保存到session中，否则就跳过
-                User user = userService.getUserByToken(value);
-                if (user != null) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("user",user);
-                }
-                break;
-            }
-        }*/
-
-
-        return "index";
-    }
 
 
     /**

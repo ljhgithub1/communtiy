@@ -59,16 +59,61 @@
         <div class="col-lg-9 col-xs-12 col-sm-12 col-md-12">
             <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 发现</h2>
             <hr/>
-            <div class="media">
+
+
+            <!--
+             th:each 使用在哪个标签上面，哪个标签及其包含的标签都会进入循环
+            -->
+            <div class="media" th:each="question:${pageHelper.questions}" th:if="${pageHelper != null}">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object" src="https://avatars1.githubusercontent.com/u/48481596?v=4" alt="avatar">
+                        <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" src="https://avatars1.githubusercontent.com/u/48481596?v=4" alt="avatar">
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading">看视频不仅仅是为了学习</h4>
-                    你学懂了吗？？？
+                    <!-- 问题题目 -->
+                    <h4 class="media-heading" th:text="${question.title}">看视频不仅仅是为了学习</h4>
+                    <!-- 阅读数、点赞数、发布时间 -->
+                    <!--
+                      使用 thymeleaf 的 dates.format 工具方法 , 第一个参数如果需要从request中获取，或者使用其他工具类，都不在需要加 ${},加了会报错
+                    -->
+                    [[${question.commentCount}]]评论 [[${question.viewCount}]]阅读 [[${question.likeCount}]]点赞 [[${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm:ss')}]]
                 </div>
+            </div>
+            <!-- 分页 -->
+            <div>
+                <nav aria-label="Page navigation" th:class="pageStyle">
+                    <ul class="pagination">
+                        <li th:if="${pageHelper.firstPage}">
+                            <a th:href="@{/?currentPage=}+${pageHelper.homePage}" href="#" aria-label="Previous">
+                                <span aria-hidden="true">首页</span>
+                            </a>
+                        </li>
+                        <li th:if="${pageHelper.previous}" >
+                            <a th:href="@{/?currentPage=}+(${pageHelper.currentPage}-1)" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <!--
+                         thymeleaf 中如何拼接请求地址
+
+                             th:href="@{/?currentPage=}+${number}"
+                        -->
+                        <li th:each="number : ${pageHelper.pageNumbers}" th:class="${pageHelper.currentPage == number ? 'active':''}"><a th:href="@{/?currentPage=}+${number}">[[${number}]]</a></li>
+
+
+                        <li th:if="${pageHelper.next}">
+                            <a th:href="@{/?currentPage=}+(${pageHelper.currentPage}+1)" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li th:if="${pageHelper.lastPage}">
+                            <a  th:href="@{/?currentPage=}+${pageHelper.pageCount}" href="#" aria-label="">
+                                <span aria-hidden="true">末页</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
         <div class="col-lg-3 col-xs-12 col-sm-12 col-md-12">

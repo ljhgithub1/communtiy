@@ -26,7 +26,6 @@ public class User {
     private String avatarUrl; // 头像地址
 
 
-
     @Override
     public String toString() {
         return "User{" +
@@ -37,6 +36,7 @@ public class User {
                 ", intro='" + intro + '\'' +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
+                ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
 }
