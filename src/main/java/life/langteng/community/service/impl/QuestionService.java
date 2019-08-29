@@ -48,7 +48,6 @@ public class QuestionService implements IQuestionService {
          *
          *       position = (current - 1) * pageSize
          *
-         *
          */
 
         int position = (currentPage - 1) * pageSize;
@@ -60,4 +59,30 @@ public class QuestionService implements IQuestionService {
     public long queryCount() {
         return questionMapper.queryCount();
     }
+
+    @Override
+    public List<QuestionDTO> getQuestionsByUserId(Integer userId, Integer currentPage, Integer pageSize) {
+
+        int postion = (currentPage -1) * pageSize;
+
+        List<QuestionDTO> questions = questionMapper.getQuestionsByUserId(userId,postion,pageSize);
+
+        return questions;
+    }
+
+    @Override
+    public long queryCountByUserId(Integer userId) {
+        long count = questionMapper.queryCountByUserId(userId);
+        return count;
+    }
+
+    @Override
+    public QuestionDTO getQuestionById(Integer questionId) {
+
+        QuestionDTO question = questionMapper.getQuestionById(questionId);
+
+        return question;
+    }
+
+
 }

@@ -25,19 +25,46 @@ public class UserServiceImpl implements IUserService {
         }
 
         User user = new User();
-        user.setAccount(githutUser.getLogin());
+        // github 的唯一账号
+        user.setAccount(String.valueOf(githutUser.getId()));
+
         user.setName(githutUser.getName());
         user.setIntro(githutUser.getBio());
 
         user.setToken(UUID.randomUUID().toString());
-        user.setGmtCreate(System.currentTimeMillis());
-        user.setGmtModified(user.getGmtCreate());
+
         user.setAvatarUrl(githutUser.getAvatar_url());
 
-        insertUser(user);
-
+        // 如果账号存在，那么就修改其他的信息，如:name、bio、avatar_url ...
+        createOrUpdate(user);
+        //  该 user 会存放到上下文中
         return user;
     }
+
+    /**
+     * 新用户就插入信息，老用户就修改信息
+     * @param user
+     */
+    private void createOrUpdate(User user){
+        User u = userMapper.getUserByAccount(user.getAccount());
+        if(u == null){
+            // 插入操作
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
+
+            userMapper.insertUser(user);
+        }else{
+            // 更新操作 -- 可能会更新的数据
+            u.setToken(user.getToken());
+            u.setAvatarUrl(user.getAvatarUrl());
+            u.setName(user.getName());
+            u.setIntro(user.getIntro());
+            u.setGmtModified(System.currentTimeMillis());
+
+            userMapper.updateUserToken(u);
+        }
+    }
+
 
     @Override
     public void insertUser(User user) {

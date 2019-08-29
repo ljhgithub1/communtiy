@@ -84,4 +84,26 @@ public interface QuestionMapper {
             "u.id uid,u.account,u.name,u.token,u.intro,u.gmt_create u_gmt_create,u.gmt_modified u_gmt_modified,u.avatar_url from" +
             " tb_question q,tb_user u where q.creator = u.id  limit #{position},#{pageSize}")
     List<QuestionDTO> queryQuestionByPage(@Param("position") Integer position,@Param("pageSize") Integer pageSize);
+
+    /**
+     * 查询指定用户发布的所有的问题
+     * @param userId
+     * @param position
+     * @param pageSize
+     * @return
+     */
+    @ResultMap("questionDTO")
+    @Select("select q.id,q.title,q.description,q.tag,q.gmt_create,q.gmt_modified,q.creator,q.comment_count,q.view_count,q.like_count," +
+            "u.id uid,u.account,u.name,u.token,u.intro,u.gmt_create u_gmt_create,u.gmt_modified u_gmt_modified,u.avatar_url from" +
+            " tb_question q,tb_user u where q.creator = u.id and u.id = #{userId} limit #{position},#{pageSize}")
+    List<QuestionDTO> getQuestionsByUserId(@Param("userId") Integer userId,@Param("position") Integer position,@Param("pageSize") Integer pageSize);
+
+    @Select("select count(id) from tb_question where creator = #{userId}")
+    long queryCountByUserId(@Param("userId") Integer userId);
+
+    @ResultMap("questionDTO")
+    @Select("select q.id,q.title,q.description,q.tag,q.gmt_create,q.gmt_modified,q.creator,q.comment_count,q.view_count,q.like_count," +
+            "u.id uid,u.account,u.name,u.token,u.intro,u.gmt_create u_gmt_create,u.gmt_modified u_gmt_modified,u.avatar_url from" +
+            " tb_question q,tb_user u where q.creator = u.id and q.id = #{questionId}")
+    QuestionDTO getQuestionById(@Param("questionId") Integer questionId);
 }

@@ -3,8 +3,6 @@ package life.langteng.community.mapper;
 import life.langteng.community.entity.User;
 import org.apache.ibatis.annotations.*;
 
-import javax.annotation.Generated;
-
 /**
  * 创建 UserMapper 接口
  */
@@ -27,6 +25,11 @@ public interface UserMapper {
     void insertUser(User user);
 
     @Select("select * from tb_user where token = #{token}")
-    User getUserByToken(String token);
+    User getUserByToken(@Param("token") String token);
 
+    @Select("select * from tb_user where account = #{account}")
+    User getUserByAccount(@Param("account") String account);
+
+    @Update("update tb_user set (name= #{name},token= #{token},intro= #{intro},avatar_url= #{avatarUrl},gmt_modified= #{gmtModified}) where id = #{id}")
+    void updateUserToken(User user);
 }

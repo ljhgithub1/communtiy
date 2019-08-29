@@ -11,7 +11,7 @@ public class User {
 
     private Integer id;      // 数据库id
 
-    private String account;  // 用户账号
+    private String account;  // 用户账号 -- gitHub上面用户的唯一标识账号
 
     private String token;    // 用户令牌
 

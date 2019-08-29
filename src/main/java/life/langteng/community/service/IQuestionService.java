@@ -32,4 +32,27 @@ public interface IQuestionService {
      * @return
      */
     long queryCount();
+
+    /**
+     * 通过用户id，查询该用户发起的所有问题
+     * @param id
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    List<QuestionDTO> getQuestionsByUserId(Integer id,Integer currentPage,Integer pageSize);
+
+    /**
+     * 查询指定用户发布问题的总个数
+     * @param userId
+     * @return
+     */
+    long queryCountByUserId(Integer userId);
+
+    /**
+     * 获取指定用户的指定id的问题
+     * @param questionId
+     * @return
+     */
+    QuestionDTO getQuestionById(Integer questionId);
 }

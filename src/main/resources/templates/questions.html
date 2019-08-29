@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>community</title>
+    <title>publish</title>
     <!--注意:这里的link需要加 rel="stylesheet",否则没有样式-->
     <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/static/css/community.css"/>
@@ -12,13 +12,12 @@
 <body>
 <!--顶部导航条-->
 <div th:replace="~{navfragment :: navFragment}"></div>
-<hr/>
+<!-- 正文 -->
 <div class="container-fluid main">
     <div class="row">
         <div class="col-lg-9 col-xs-12 col-sm-12 col-md-12">
-            <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 发现</h2>
+            <h2>所有问题:</h2>
             <hr/>
-
 
             <!--
              th:each 使用在哪个标签上面，哪个标签及其包含的标签都会进入循环
@@ -31,7 +30,7 @@
                 </div>
                 <div class="media-body">
                     <!-- 问题题目 -->
-                    <h4 class="media-heading"><a th:href="@{profile/replies/}+${question.id}" th:text="${question.title}">看视频不仅仅是为了学习</a></h4>
+                    <h4 class="media-heading" th:text="${question.title}">看视频不仅仅是为了学习</h4>
                     <!-- 阅读数、点赞数、发布时间 -->
                     <!--
                       使用 thymeleaf 的 dates.format 工具方法 , 第一个参数如果需要从request中获取，或者使用其他工具类，都不在需要加 ${},加了会报错
@@ -39,20 +38,17 @@
                     [[${question.commentCount}]]评论 [[${question.viewCount}]]阅读 [[${question.likeCount}]]点赞 [[${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm:ss')}]]
                 </div>
             </div>
-
-
-
             <!-- 分页 -->
-            <div th:if="${pageHelper != null}">
+            <div th:if="${pageHelper != null}" >
                 <nav aria-label="Page navigation" th:class="pageStyle">
                     <ul class="pagination">
                         <li th:if="${pageHelper.firstPage}">
-                            <a th:href="@{/?currentPage=}+${pageHelper.homePage}" href="#" aria-label="Previous">
+                            <a th:href="@{/profile/questions?currentPage=}+${pageHelper.homePage}" href="#" aria-label="Previous">
                                 <span aria-hidden="true">首页</span>
                             </a>
                         </li>
                         <li th:if="${pageHelper.previous}" >
-                            <a th:href="@{/?currentPage=}+(${pageHelper.currentPage}-1)" href="#" aria-label="Previous">
+                            <a th:href="@{/profile/questions?currentPage=}+(${pageHelper.currentPage}-1)" href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
@@ -61,16 +57,16 @@
 
                              th:href="@{/?currentPage=}+${number}"
                         -->
-                        <li th:each="number : ${pageHelper.pageNumbers}" th:class="${pageHelper.currentPage == number ? 'active':''}"><a th:href="@{/?currentPage=}+${number}">[[${number}]]</a></li>
+                        <li th:each="number : ${pageHelper.pageNumbers}" th:class="${pageHelper.currentPage == number ? 'active':''}"><a th:href="@{/profile/questions?currentPage=}+${number}">[[${number}]]</a></li>
 
 
                         <li th:if="${pageHelper.next}">
-                            <a th:href="@{/?currentPage=}+(${pageHelper.currentPage}+1)" href="#" aria-label="Next">
+                            <a th:href="@{/profile/questions?currentPage=}+(${pageHelper.currentPage}+1)" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
                         <li th:if="${pageHelper.lastPage}">
-                            <a  th:href="@{/?currentPage=}+${pageHelper.pageCount}" href="#" aria-label="">
+                            <a  th:href="@{/profile/questions?currentPage=}+${pageHelper.pageCount}" href="#" aria-label="">
                                 <span aria-hidden="true">末页</span>
                             </a>
                         </li>
@@ -78,11 +74,14 @@
                 </nav>
             </div>
         </div>
+
         <div class="col-lg-3 col-xs-12 col-sm-12 col-md-12">
-            <h2>学习就是:</h2><br/>
-            <h4>发现问题</h4><br/>
-            <h4>查询问题</h4><br/>
-            <h4>解决问题</h4><br/>
+            <div class="list-group">
+                <a href="#" class="list-group-item active">我的问题</a>
+                <a href="#" class="list-group-item">我的回复</a>
+                <a href="#" class="list-group-item">其他1</a>
+                <a href="#" class="list-group-item">其他2</a>
+            </div>
         </div>
     </div>
 </div>
