@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>publish</title>
     <!--注意:这里的link需要加 rel="stylesheet",否则没有样式-->
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/static/css/community.css"/>
-    <script th:src="@{/static/js/jquery-3.3.1.min.js}" src="/static/jquery/jquery-3.3.1.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+    <script th:src="@{/js/jquery-3.3.1.min.js}" src="/jquery/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
 <!--顶部导航条-->
@@ -21,6 +21,13 @@
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起</h2>
             <hr/>
             <form action="/publish" method="post">
+                <!--
+                  该隐藏的字段 id   当question.id 存在的时候，才显示
+                                  即 question != null  and question.id != null 的情况才显示
+
+                           在该文本不显示的情况下 question == null  question.id,也会报错
+                -->
+                <input type="hidden" name="id" th:if="(question != null and question.id != null)" th:value="${question == null ? '':question.id}" />
                 <div class="form-group">
                     <div class="row">
                         <div class="col-lg-3">
@@ -34,7 +41,7 @@
                      注意： 这里使用 th:text=${}  会跳一格输出
                            这里需要使用 th:value=${}
                     -->
-                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题..." th:value="${title}"/>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题..." th:value="${question == null ? '' : question.title}"/>
                 </div>
                 <div class="form-group">
                     <div class="row">
@@ -44,7 +51,7 @@
                         <div class="col-lg-5"><h4 th:if="${descriptionError != null}" style="color: red;" th:text="${descriptionError}"></h4>
                         </div>
                     </div>
-                    <textarea class="form-control" rows="25" id="description" name="description" th:text="${description}"></textarea>
+                    <textarea class="form-control" rows="25" id="description" name="description" th:text="${question == null ? '' :question.description}"></textarea>
                 </div>
                 <div class="form-group">
                     <div class="row">
@@ -54,14 +61,19 @@
                         <div class="col-lg-5"><h4 th:if="${tagError != null}" style="color: red;" th:text="${tagError}"></h4>
                         </div>
                     </div>
-                    <input type="text" class="form-control" id="tag" name="tag" placeholder="多个标签使用逗号隔开" th:text="${tag}">
+                    <input type="text" class="form-control" id="tag" name="tag" placeholder="多个标签使用逗号隔开" th:value="${question == null ? '' :question.tag}">
                 </div>
                 <div class="row">
                     <div class="col-lg-9">
                         <div class="alert alert-danger" role="alert" th:if="${msg != null}"></div>
                     </div>
                     <div class="col-lg-offset-2 col-lg-1">
-                        <button type="submit" class="btn btn-primary">提交</button>
+                        <!--
+                           这里是 th:text  如果使用 th:value 不生效
+
+                           总结: input 总是使用  th:value  其他情况多考虑使用 th:text
+                        -->
+                        <button type="submit" class="btn btn-primary" th:text="${question == null? '提交' : (question.id == null ? '提交':'修改')}"></button>
                     </div>
                 </div>
             </form>

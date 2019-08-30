@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+     <!--将类路径下的资源，添加到 MBG运行时的环境中去  没什么用-->
+    <!--默认添加的是db2的资源 -->
+    <!--<classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />-->
+
+
+    <!--
+     context 指定 MBG运行的环境
+        id  必选属性   取一个唯一的名称
+        targetRuntime  可选的
+            MyBatis3  可以兼容Mybatis3.0或者更高的版本，会生成复杂的example条件查询和动态sql
+            MyBatis3Simple 可以兼容Mybatis3.0或者更高的版本，只会生成简单的CRUD功能，不会生成复杂的example条件查询，简单的动态sql
+    -->
+    <context id="MySqlTables" targetRuntime="MyBatis3">
+        <!--
+          取消注释的配置，需要注意存放的位置
+          不然会报错
+        -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"></property>
+        </commentGenerator>
+
+        <!--
+         配置与数据库的连接信息
+        -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://47.102.195.189:3306/db_community"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+
+        <!--
+            java类型的解析器
+            Java类型解析器用于根据数据库列信息计算Java类型。
+            默认的Java类型解析器尝试通过替换整数类型(Long、Integer、Short等)使JDBC小数和数字类型更容易使用
+        -->
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--
+          targetProject   目标工程路径，必须是已经存在的目录，MBG不会自动创建
+          targetPackage   目标包路径，如果不存在，MBG会自动创建
+        -->
+        <!--
+          生成java模型  entity
+        -->
+        <javaModelGenerator targetPackage="life.langteng.community.entity" targetProject="./src/main/java">
+            <!--使用子包-->
+            <property name="enableSubPackages" value="true" />
+            <!--去掉多余的空格-->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!--
+         生成mapper xml文件
+        -->
+        <sqlMapGenerator targetPackage="mybatis/mappers"  targetProject="./src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!--
+          生成 mapper 接口
+
+          type="XMLMAPPER" 生成的接口用于xml使用
+        -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="life.langteng.community.mapper"  targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--
+           数据库表和java对象的映射
+        -->
+        <table tableName="tb_user" domainObjectName="User" ></table>
+        <table tableName="tb_question" domainObjectName="Question" ></table>
+
+
+        <!--
+        如果 useActualColumnNames 为true 就使用 数据库中字段名称命名
+        useActualColumnNames 为false(default) 使用camelcase驼峰命名法
+        -->
+        <!--<property name="useActualColumnNames" value="true"/>-->
+        <!--&lt;!&ndash;主键&ndash;&gt;-->
+        <!--<generatedKey column="ID" sqlStatement="DB2" identity="true" />-->
+
+        <!--&lt;!&ndash;忽略某个属性&ndash;&gt;-->
+        <!--<ignoreColumn column="FRED" />-->
+        <!--&lt;!&ndash;字段和属性映射的重写&ndash;&gt;-->
+        <!--<columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />-->
+        <!--<columnOverride column="DATE_FIELD" property="startDate" />-->
+    </context>
+</generatorConfiguration>

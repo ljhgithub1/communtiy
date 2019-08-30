@@ -1,5 +1,6 @@
 package life.langteng.community.controller;
 
+import life.langteng.community.dto.QuestionDTO;
 import life.langteng.community.entity.Question;
 import life.langteng.community.entity.User;
 import life.langteng.community.service.IQuestionService;
@@ -29,50 +30,54 @@ public class PublishController {
         return "publish";
     }
 
+    /**
+     *
+     * 第一次发起问题就是新建一个问题
+     *
+     * 修改问题并提交就是一个更新问题
+     *
+     * @param question
+     * @param request
+     * @param model
+     * @return
+     */
     @PostMapping("/publish")
-    public String doPublish(
-            @RequestParam(name = "title") String title,
-            @RequestParam(name = "description") String description,
-            @RequestParam(name = "tag") String tag,
-            HttpServletRequest request,
-            Model model
-            ){
-        model.addAttribute("title",title);
-        model.addAttribute("description",description);
-        model.addAttribute("tag",tag);
+    public String doPublish(Question question,HttpServletRequest request, Model model){
+
+
+        model.addAttribute("question",question);
+
         /**
+         * question == null ???
+         *
          * 对参数进行校验
          */
-        if(StringUtils.isEmpty(title)){
+        if(question == null || StringUtils.isEmpty(question.getTitle())){
             request.setAttribute("titleError","问题不能为空");
             return "publish";
         }
-        if(StringUtils.isEmpty(description)){
+        if(question == null || StringUtils.isEmpty(question.getDescription())){
             request.setAttribute("descriptionError","问题描述不能为空");
             return "publish";
         }
-        if(StringUtils.isEmpty(tag)){
+        if(question == null || StringUtils.isEmpty(question.getTag())){
             request.setAttribute("tagError","标签不能为空");
             return "publish";
         }
-
-        User user = (User) request.getSession().getAttribute("user");
-
-
-        Question question = new Question();
-        question.setTitle(title);
-        question.setDescription(description);
-        question.setTag(tag);
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtModified(question.getGmtCreate());
-        question.setCreator(user.getId());
-        question.setCommentCount(0);
-        question.setViewCount(0);
-        question.setLikeCount(0);
-
-        questionService.createQuestion(question);
-
+        questionService.createOrUpdate(question,request);
         return "redirect:/";
+    }
+
+    @GetMapping("/edit/{questionId}")
+    public String edit(@PathVariable(name = "questionId")Integer questionId,
+                       Model model){
+
+        QuestionDTO question = questionService.getQuestionById(questionId);
+
+        model.addAttribute("question",question);
+
+        return "publish";
+
     }
 
 }

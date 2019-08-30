@@ -1,42 +1,83 @@
 package life.langteng.community.entity;
 
-
-import lombok.Data;
-
-/**
- * 用户实体类
- */
-@Data
 public class User {
+    private Integer id;
 
-    private Integer id;      // 数据库id
+    private String account;
 
-    private String account;  // 用户账号 -- gitHub上面用户的唯一标识账号
+    private String name;
 
-    private String token;    // 用户令牌
+    private String token;
 
-    private String name;     // 用户名称
+    private String intro;
 
-    private String intro;    // 用户个人简介
+    private Long gmtCreate;
 
-    private Long gmtCreate;  // 创建的时间戳
+    private Long gmtModified;
 
-    private Long gmtModified;// 修改的时间戳
+    private String avatarUrl;
 
-    private String avatarUrl; // 头像地址
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", account='" + account + '\'' +
-                ", token='" + token + '\'' +
-                ", name='" + name + '\'' +
-                ", intro='" + intro + '\'' +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
-                ", avatarUrl='" + avatarUrl + '\'' +
-                '}';
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account == null ? null : account.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token == null ? null : token.trim();
+    }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro == null ? null : intro.trim();
+    }
+
+    public Long getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(Long gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public Long getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Long gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl == null ? null : avatarUrl.trim();
     }
 }

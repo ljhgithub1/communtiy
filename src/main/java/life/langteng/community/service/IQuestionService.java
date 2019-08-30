@@ -3,6 +3,7 @@ package life.langteng.community.service;
 import life.langteng.community.dto.QuestionDTO;
 import life.langteng.community.entity.Question;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface IQuestionService {
@@ -55,4 +56,10 @@ public interface IQuestionService {
      * @return
      */
     QuestionDTO getQuestionById(Integer questionId);
+
+    /**
+     * 创建或者提交问题
+     * @param question
+     */
+    void createOrUpdate(Question question,HttpServletRequest request);
 }

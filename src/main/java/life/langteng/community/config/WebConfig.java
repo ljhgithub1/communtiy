@@ -31,9 +31,10 @@ public class WebConfig implements WebMvcConfigurer {
          */
         registry.addInterceptor(checkLoginInterception)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/","/callback")
-                .excludePathPatterns("/static/");  // 将 静态资源放行了，配置规则在 application.properties中
-        // spring.mvc.static-path-pattern=/static/**
+                .excludePathPatterns("/callback");
+
+//                .excludePathPatterns("/static/");  // 将 静态资源放行了，配置规则在 application.properties中
+//                 spring.mvc.static-path-pattern=/static/**
     }
 
 }

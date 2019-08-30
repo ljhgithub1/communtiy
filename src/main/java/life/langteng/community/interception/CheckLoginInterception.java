@@ -39,6 +39,10 @@ public class CheckLoginInterception implements HandlerInterceptor {
      *
      *          2、不存在，就去查看本地cookie中是否存在用户对应的token信息
      *
+     *
+     *
+     *    该方法只是做检查，设置状态信息，什么东西都要放行
+     *
      * @param request
      * @param response
      * @param handler
@@ -59,8 +63,7 @@ public class CheckLoginInterception implements HandlerInterceptor {
         Cookie[] cookies = request.getCookies();
 
         if (cookies == null || cookies.length == 0) {
-            request.setAttribute("msg","请登录");
-            return false;
+            return true;
         }
 
         for (Cookie cookie : cookies) {
@@ -69,15 +72,12 @@ public class CheckLoginInterception implements HandlerInterceptor {
                 // 能通过token找到用户，那么就放行
                 if(user != null){
                     session.setAttribute("user",user);
-                    return true;
-                }else{
-                    request.setAttribute("msg","请登录");
-                    return false;
                 }
+                break;
             }
         }
 
-        return false;
+        return true;
     }
 
     /**
