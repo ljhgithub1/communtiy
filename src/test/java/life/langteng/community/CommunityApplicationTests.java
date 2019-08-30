@@ -25,11 +25,6 @@ public class CommunityApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		List<QuestionDTO> questionDTOS = questionMapper.queryQuestionByPage(0, 3);
-		System.out.println(questionDTOS.size());
-		for (QuestionDTO q:questionDTOS ) {
-			System.out.println(q);
-		}
 
 	}
 

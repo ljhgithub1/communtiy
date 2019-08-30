@@ -1,9 +1,12 @@
 package life.langteng.community.service.impl;
 
+import life.langteng.community.bean.ErrorMessage;
 import life.langteng.community.dto.QuestionDTO;
 import life.langteng.community.entity.Question;
 import life.langteng.community.entity.QuestionExample;
 import life.langteng.community.entity.User;
+import life.langteng.community.exception.QuestionResourceNotFoundException;
+import life.langteng.community.mapper.QuestionCustomizeMapper;
 import life.langteng.community.mapper.QuestionMapper;
 import life.langteng.community.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ public class QuestionServiceImpl implements IQuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private QuestionCustomizeMapper questionCustomizeMapper;
+
 
     @Override
     public boolean createQuestion(Question question) {
@@ -27,7 +33,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public List<QuestionDTO> getAllQuestions() {
-        List<QuestionDTO> questionDTOS = questionMapper.queryAllQuestions();
+        List<QuestionDTO> questionDTOS = questionCustomizeMapper.queryAllQuestions();
         return questionDTOS;
     }
 
@@ -54,7 +60,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
         int position = (currentPage - 1) * pageSize;
 
-        return questionMapper.queryQuestionByPage(position,pageSize);
+        return questionCustomizeMapper.queryQuestionByPage(position,pageSize);
     }
 
     @Override
@@ -67,7 +73,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
         int position = (currentPage -1) * pageSize;
 
-        List<QuestionDTO> questions = questionMapper.getQuestionsDTOByUserId(userId,position,pageSize);
+        List<QuestionDTO> questions = questionCustomizeMapper.getQuestionsDTOByUserId(userId,position,pageSize);
 
         return questions;
     }
@@ -84,8 +90,10 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public QuestionDTO getQuestionById(Integer questionId) {
 
-        QuestionDTO question = questionMapper.getQuestionDTOById(questionId);
-
+        QuestionDTO question = questionCustomizeMapper.getQuestionDTOById(questionId);
+        if(question == null){
+            throw new QuestionResourceNotFoundException(ErrorMessage.QUESTION_NOT_FOUND);
+        }
         return question;
     }
 
@@ -112,6 +120,18 @@ public class QuestionServiceImpl implements IQuestionService {
             updateQuestion(question);
         }
 
+    }
+
+    @Override
+    public int incViewCount(Integer questionId) {
+        int i = questionCustomizeMapper.incViewCount(questionId);
+        return i;
+    }
+
+    @Override
+    public int incCommentCount(Integer questionId, Integer commentCount) {
+        int i = questionCustomizeMapper.incCommentCount(questionId, commentCount);
+        return i;
     }
 
 

@@ -16,7 +16,7 @@
 <div class="container-fluid main">
     <div class="row">
         <div class="col-lg-9 col-xs-12 col-sm-12 col-md-12">
-            <h2>所有问题:</h2>
+            <h2>我的问题:</h2>
             <hr/>
 
             <!--
@@ -30,7 +30,7 @@
                 </div>
                 <div class="media-body">
                     <!-- 问题题目 -->
-                    <h4 class="media-heading" th:text="${question.title}">看视频不仅仅是为了学习</h4>
+                    <a th:href="@{/profile/replies/}+${question.id}"><h4 class="media-heading" th:text="${question.title}"></h4></a>
                     <!-- 阅读数、点赞数、发布时间 -->
                     <!--
                       使用 thymeleaf 的 dates.format 工具方法 , 第一个参数如果需要从request中获取，或者使用其他工具类，都不在需要加 ${},加了会报错

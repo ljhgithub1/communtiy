@@ -1,8 +1,6 @@
 package life.langteng.community.mapper;
 
 import java.util.List;
-
-import life.langteng.community.dto.QuestionDTO;
 import life.langteng.community.entity.Question;
 import life.langteng.community.entity.QuestionExample;
 import org.apache.ibatis.annotations.Param;
@@ -35,13 +33,4 @@ public interface QuestionMapper {
     int updateByPrimaryKeyWithBLOBs(Question record);
 
     int updateByPrimaryKey(Question record);
-
-//-----------------------------------------------------------
-    List<QuestionDTO>  queryAllQuestions();
-
-    List<QuestionDTO> queryQuestionByPage(@Param("position") Integer position, @Param("pageSize") Integer pageSize);
-
-    QuestionDTO getQuestionDTOById(@Param("questionId") Integer questionId);
-
-    List<QuestionDTO> getQuestionsDTOByUserId(@Param("userId") Integer userId,@Param("position") Integer position,@Param("pageSize") Integer pageSize);
 }

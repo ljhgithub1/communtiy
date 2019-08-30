@@ -62,4 +62,22 @@ public interface IQuestionService {
      * @param question
      */
     void createOrUpdate(Question question,HttpServletRequest request);
+
+    /**
+     * 浏览数在 数据库中 自增1  view_count = view_count + 1
+     * @param questionId
+     * @return
+     */
+    int incViewCount(Integer questionId);
+
+    /**
+     * 评论数 在数据库中 增加  comment_count = comment_count + commentCount
+     *
+     * 在并发高的情况下，我们可以先将数值写到内存中，然后在一次性将数据写到数据库中
+     *
+     * @param questionId
+     * @param commentCount
+     * @return
+     */
+    int incCommentCount(Integer questionId,Integer commentCount);
 }

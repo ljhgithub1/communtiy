@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="life.langteng.community.mapper.QuestionCustomizeMapper">
+
+  <resultMap id="questionDTO" type="life.langteng.community.dto.QuestionDTO">
+    <id column="id" property="id"></id>
+    <result column="title" property="title"></result>
+    <result column="description" property="description"></result>
+    <result column="tag" property="tag"></result>
+    <result column="creator" property="creator"></result>
+    <result column="gmt_create" property="gmtCreate"></result>
+    <result column="gmt_modified" property="gmtModified"></result>
+    <result column="comment_count" property="commentCount"></result>
+    <result column="view_count" property="viewCount"></result>
+    <result column="like_count" property="likeCount"></result>
+
+    <association property="user" javaType="life.langteng.community.entity.User">
+      <id column="uid" property="id"></id>
+      <result column="account" property="account"></result>
+      <result column="name" property="name"></result>
+      <result column="token" property="token"></result>
+      <result column="intro" property="intro"></result>
+      <result column="u_gmt_create" property="gmtCreate"></result>
+      <result column="u_gmt_modified" property="gmtModified"></result>
+      <result column="avatar_url" property="avatarUrl"></result>
+    </association>
+  </resultMap>
+
+  <select id="queryAllQuestions" resultMap="questionDTO">
+    select q.id,q.title,q.description,q.tag,q.creator,q.gmt_create,q.gmt_modified,q.comment_count,q.view_count,q.like_count,
+          u.id uid,u.account,u.name,u.token,u.intro,u.gmt_create u_gmt_create,u.gmt_modified u_gmt_modified,u.avatar_url
+    from tb_question q ,tb_user u where q.creator=u.id
+  </select>
+
+  <select id="queryQuestionByPage" resultMap="questionDTO">
+    select q.id,q.title,q.description,q.tag,q.creator,q.gmt_create,q.gmt_modified,q.comment_count,q.view_count,q.like_count,
+          u.id uid,u.account,u.name,u.token,u.intro,u.gmt_create u_gmt_create,u.gmt_modified u_gmt_modified,u.avatar_url
+    from tb_question q ,tb_user u where q.creator=u.id limit #{position},#{pageSize}
+  </select>
+
+  <select id="getQuestionDTOById" resultMap="questionDTO">
+    select q.id,q.title,q.description,q.tag,q.creator,q.gmt_create,q.gmt_modified,q.comment_count,q.view_count,q.like_count,
+          u.id uid,u.account,u.name,u.token,u.intro,u.gmt_create u_gmt_create,u.gmt_modified u_gmt_modified,u.avatar_url
+    from tb_question q ,tb_user u where q.creator=u.id and q.id =#{questionId}
+  </select>
+
+  <select id="getQuestionsDTOByUserId" resultMap="questionDTO">
+    select q.id,q.title,q.description,q.tag,q.creator,q.gmt_create,q.gmt_modified,q.comment_count,q.view_count,q.like_count,
+          u.id uid,u.account,u.name,u.token,u.intro,u.gmt_create u_gmt_create,u.gmt_modified u_gmt_modified,u.avatar_url
+    from tb_question q ,tb_user u where q.creator=u.id and u.id =#{userId} limit #{position},#{pageSize}
+  </select>
+
+  <update id="incViewCount">
+    update tb_question set view_count = view_count + 1 where id = #{questionId}
+  </update>
+
+  <update id="incCommentCount">
+    update tb_question set comment_count = comment_count + #{commentCount} where id = #{questionId}
+  </update>
+</mapper>

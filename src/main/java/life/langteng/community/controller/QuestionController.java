@@ -2,6 +2,7 @@ package life.langteng.community.controller;
 
 import life.langteng.community.dto.PageHelperDTO;
 import life.langteng.community.dto.QuestionDTO;
+import life.langteng.community.entity.Question;
 import life.langteng.community.entity.User;
 import life.langteng.community.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,17 +68,25 @@ public class QuestionController {
     }
 
 
+
+
     @GetMapping("/profile/replies/{id}")
     public String userReplies(@PathVariable(name = "id") Integer questionId,
                               HttpServletRequest request){
 
+        // 修改 当前问题的浏览数  我们需要考虑并发问题，我们应该在数据库的基础上去自增1，
+        // 而不是，将值取出来，加一后再存入数据库
+
+        questionService.incViewCount(questionId);
 
         QuestionDTO question = questionService.getQuestionById(questionId);
-        System.out.println(question);
+
         request.setAttribute("question",question);
 
         return "replies";
     }
+
+
 
 
 

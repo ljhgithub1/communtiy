@@ -77,7 +77,7 @@
         -->
         <table tableName="tb_user" domainObjectName="User" ></table>
         <table tableName="tb_question" domainObjectName="Question" ></table>
-
+        <table tableName="tb_comment" domainObjectName="Comment"></table>
 
         <!--
         如果 useActualColumnNames 为true 就使用 数据库中字段名称命名
