@@ -40,44 +40,6 @@ public class AuthorizationController {
 
     /**
      *
-     * 用户使用github第三方登录   ----------- 通过这样的形式是，请求不到github的，必须通过 index.html 中的 <a></a> 标签 的href 属性指定
-     *
-     * 执行后，github会调用我们的回调方法，并返回一个code参数
-     *
-     * 请求方式: get
-     *
-     */
-    @RequestMapping("/login")
-    @org.springframework.web.bind.annotation.ResponseBody
-    public String login(){
-
-        String url = "https://github.com/login/oauth/authorize" +       // url
-                "?client_id=77b3bd8c926cc4119711" +                     // client_id
-                "&redirect_uri=http://localhost:8080/callback" +        // github回调我们的方法的路径(url)
-                "&scope=user";                                          // 获取用户信息
-        // state : type is String   如果我们这里添加了状态，那么GitHub回调我们方法的时候，会将该状态传入过来，我们可以通过前后状态码做一些判断
-
-
-        // 获取 okHttpClient(http请求的客户端)
-        OkHttpClient client = new OkHttpClient();
-
-        // 通过url地址获取一个 okHttp 中的request对象
-        Request request = new Request.Builder().url(url).build();
-
-        try {
-            // 执行url请求
-            client.newCall(request).execute();
-        } catch(IOException e){
-            // 这里可以输出日志
-        }
-        return null;
-    }
-
-
-
-
-    /**
-     *
      * 在创建 GitHub的 OAuth application 的时候，指定该回调URL
      *
      * gitHub 回调我们的方法
@@ -115,6 +77,21 @@ public class AuthorizationController {
     }
 
 
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request,HttpServletResponse response){
+
+        // 删除session中用户信息
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+
+        // 新建一个同名的cookie，然后设置其有效时间为0,相当于删除了cookie
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return "redirect:/";
+    }
 
 
 

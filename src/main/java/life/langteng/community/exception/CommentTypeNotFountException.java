@@ -2,7 +2,7 @@ package life.langteng.community.exception;
 
 import life.langteng.community.bean.ErrorMessage;
 
-public class CommentTypeNotFountException extends ResourceNotFoundException {
+public class CommentTypeNotFountException extends CommentResourceNotFoundException {
 
     public CommentTypeNotFountException() {
     }

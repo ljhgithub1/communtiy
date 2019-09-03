@@ -10,6 +10,15 @@
     <script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
+<script type="text/javascript">
+    window.onload = function(){
+        var value = window.localStorage.getItem("closeable");
+        if(value == "true"){
+            window.close();
+            window.localStorage.removeItem("closeable");
+        }
+    }
+</script>
 <!--顶部导航条-->
 <div th:replace="~{navfragment :: navFragment}"></div>
 <hr/>

@@ -21,6 +21,10 @@ public class ResultMap {
     private Map<String,Object>  data;
 
 
+    public ResultMap(){}
+    public ResultMap(int code){this.code = code;}
+
+
     public ResultMap putData(String key,Object value){
         this.data.put(key,value);
         return this;

@@ -2,11 +2,13 @@ package life.langteng.community.controller;
 
 import life.langteng.community.dto.PageHelperDTO;
 import life.langteng.community.dto.QuestionDTO;
+import life.langteng.community.entity.User;
 import life.langteng.community.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -59,6 +61,16 @@ public class IndexController {
         request.setAttribute("pageHelper",pageHelperDTO);
 
         return "index";
+    }
+
+
+    @RequestMapping("/userInfo")
+    @ResponseBody
+    public User getUserInfo(HttpServletRequest request){
+
+        User user = (User)request.getSession().getAttribute("user");
+
+        return null;
     }
 
 }

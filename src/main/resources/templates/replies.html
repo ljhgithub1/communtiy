@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/community.css"/>
     <script th:src="@{/js/jquery-3.3.1.min.js}" src="/jquery/jquery-3.3.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/comment.js"></script>
 </head>
 <body>
 <!--顶部导航条-->
@@ -54,9 +55,71 @@
                     </div>
                 </div>
             </div>
+            <hr/>
+            <!--
+             ${comments.size()}  获取集合大小
+            -->
+            <h3>共有[[${comments.size()}]]个回复</h3>
+            <hr/>
+            <div class="row">
+                <!--一级评论-->
+                <div class="col-sm-12 col-xs-12 col-sm-12 col-md-12" th:each="comment : ${comments}">
+                        <img class="avatar img-rounded" th:src="${comment.user.avatarUrl}"/>&nbsp;&nbsp;
+                        <h5 style="display: inline"><span th:text="${comment.user.name}"></span></h5>
+                        <div style="margin-left: 68px">
+                            <!--描述-->
+                            <p th:text="${comment.content}"></p>
+                            <div class="reply-hint">
+                                <!--点赞-->
+                                <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                                <!--评论-->
+                                <span class="glyphicon glyphicon-comment icon" th:data-id="${comment.id}" th:data-status="0" onclick="show_se_comment(this)"></span>
+                                <span style="float:right" th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
+                            </div>
+                            <!-- 二级评论 -->
+                            <div class="col-sm-12 col-xs-12 col-sm-12 col-md-12 collapse sub-comment" th:id="'comment-'+${comment.id}">
+                                    <div class="col-sm-12 col-xs-12 col-sm-12 col-md-12" th:each="comment1 : ${comments}">
+                                    <img class="avatar img-rounded" th:src="${comment1.user.avatarUrl}"/>&nbsp;&nbsp;
+                                        <h5 style="display: inline"><span th:text="${comment1.user.name}"></span></h5>
+                                        <div style="margin-left: 68px">
+                                            <!--问题内容-->
+                                            <p th:text="${comment1.content}"></p>
+                                            <div class="reply-hint">
+                                                <!--点赞-->
+                                                <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                                                <!--评论-->
+                                                <span class="glyphicon glyphicon-comment icon" th:data-id="${comment1.id}" th:data-status="0" onclick="show_se_comment(this)"></span>
+                                                <span style="float:right" th:text="${#dates.format(comment1.gmtCreate,'yyyy-MM-dd')}"></span>
+                                            </div>
+                                            <div class="panel-collapse collapse" th:id="'subcomment-'+${comment1.id}">
+                                                这里是问题的描述这里是问题的描述这里是问题的描述这里是问题的描述
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                    </div>
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="评论...">
+                                        <button type="button" class="btn btn-success pull-right sub-comment-btn">评论</button>
+                                    </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row" id="commentArea">
+                <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                    <img class="avatar img-rounded" th:src="${session.user == null ? '' :session.user.avatarUrl}" alt="请登录"/>&nbsp;&nbsp;
+                    <h5 style="display: inline"><span th:text="${session.user == null ? '' : session.user.name}"></span></h5>
+                    <input type="hidden" th:value="${question.id}" id="questionId">
+                    <textarea class="form-control comment" rows="6" id="content"></textarea>
+                    <button type="button" class="btn btn-success btn-comment" onclick="commentQuestion()">评论</button>
+                </div>
+            </div>
         </div>
+
+
         <!--提示区-->
-        <div class="col-lg-3 col-xs-12 col-sm-12 col-md-12 hint">
+        <div class="col-lg-3 col-xs-12 col-sm-12 col-md-12">
             <div class="row">
                 <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
                     <h4>问题发起人:</h4>

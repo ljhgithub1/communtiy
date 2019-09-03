@@ -25,7 +25,7 @@ body{
     cursor: pointer;
 }
 
-.hint .avatar{
+.avatar{
     width: 40px;
     height: 40px;
 }
@@ -33,4 +33,45 @@ body{
 
 .errprPage{
     text-align: center;
+}
+
+.comment{
+    margin: 10px 0;
+}
+
+.btn-comment{
+    float: right;
+    margin-bottom: 10px;
+}
+/*
+ 回复显示下面的点赞回复按钮的样式
+*/
+.reply-hint{
+    color: #737373;
+}
+/*
+
+*/
+.reply-hint .icon{
+    font-size: 21px;
+    cursor: pointer;
+    margin-left:8px;
+}
+/*
+ 添加聚焦事件
+*/
+.reply-hint .icon:hover{
+    color: #85B3FF;
+}
+
+.comment-active{
+    color: #85B3FF;
+}
+
+.sub-comment{
+    margin: 10px;
+    border: 1px solid #efefef;
+}
+.sub-comment-btn{
+    margin: 10px;
 }

@@ -1,9 +1,12 @@
 package life.langteng.community.exceptionResolver;
 
+import life.langteng.community.bean.ResultMap;
+import life.langteng.community.exception.CommentResourceNotFoundException;
 import life.langteng.community.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -58,6 +61,17 @@ public class ResourceExceptionResolver {
         mv.addObject("message","服务器冒烟了...");
         return mv;
     }
+
+    @ResponseBody
+    @ExceptionHandler(value = CommentResourceNotFoundException.class)
+    public ResultMap handlerCommentException(CommentResourceNotFoundException e){
+        ResultMap resultMap = new ResultMap();
+        resultMap.setCode(e.getCode());
+        resultMap.setMessage(e.getMessage());
+
+        return resultMap;
+    }
+
 
     /**
      * 处理所有资源没有找到的异常

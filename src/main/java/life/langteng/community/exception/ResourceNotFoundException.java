@@ -8,11 +8,17 @@ import life.langteng.community.bean.ErrorMessage;
  */
 public abstract class ResourceNotFoundException extends RuntimeException {
 
+    private Integer code;
+
     public ResourceNotFoundException() {
     }
 
     public ResourceNotFoundException(ErrorMessage errorMessage) {
         super(errorMessage.getMessage());
+        this.code = errorMessage.getCode();
     }
 
+    public Integer getCode() {
+        return code;
+    }
 }

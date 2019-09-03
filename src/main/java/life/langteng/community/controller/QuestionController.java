@@ -1,9 +1,11 @@
 package life.langteng.community.controller;
 
+import life.langteng.community.dto.CommentDTO;
 import life.langteng.community.dto.PageHelperDTO;
 import life.langteng.community.dto.QuestionDTO;
 import life.langteng.community.entity.Question;
 import life.langteng.community.entity.User;
+import life.langteng.community.service.ICommentService;
 import life.langteng.community.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,9 @@ public class QuestionController {
 
     @Autowired
     private IQuestionService questionService;
+
+    @Autowired
+    private ICommentService commentService;
 
     /**
      * 用来展示用户提出的所有问题
@@ -78,6 +83,12 @@ public class QuestionController {
         // 而不是，将值取出来，加一后再存入数据库
 
         questionService.incViewCount(questionId);
+
+
+        List<CommentDTO> commentDTOS = commentService.queryAllQuestionComments(questionId);
+
+        request.setAttribute("comments",commentDTOS);
+
 
         QuestionDTO question = questionService.getQuestionById(questionId);
 

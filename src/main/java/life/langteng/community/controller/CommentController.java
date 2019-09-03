@@ -29,15 +29,12 @@ public class CommentController {
      */
     @ResponseBody
     @PostMapping("/comment")
-    public String comment(@RequestBody Comment comment){
+    public ResultMap comment(@RequestBody Comment comment){
 
-        commentService.createComment(comment);
+        ResultMap resultMap = commentService.createComment(comment);
 
-        ResultMap resultMap = new ResultMap();
-
-        return null;
+        return resultMap;
     }
-
 
 
 
