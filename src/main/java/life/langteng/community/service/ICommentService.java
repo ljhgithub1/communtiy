@@ -14,5 +14,17 @@ public interface ICommentService {
      */
     ResultMap createComment(Comment comment);
 
+    /**
+     * 问题的评论
+     * @param questionId
+     * @return
+     */
     List<CommentDTO> queryAllQuestionComments(Integer questionId);
+
+    /**
+     * 评论的评论
+     * @param questionId
+     * @return
+     */
+    List<CommentDTO> queryAllCommentComments(Integer questionId);
 }

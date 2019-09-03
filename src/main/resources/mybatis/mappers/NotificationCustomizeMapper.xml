@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="life.langteng.community.mapper.NotificationCustomizeMapper">
+
+    <resultMap id="notificationDTO" type="life.langteng.community.dto.NotificationDTO">
+        <id column="id" property="id"></id>
+        <result column="type" property="type"></result>
+        <result column="gmt_create" property="gmtCreate"></result>
+        <result column="status" property="status"></result>
+        <result column="name" property="replyerName"></result>
+        <result column="outer_title" property="outerTitle"></result>
+
+        <association property="user" javaType="life.langteng.community.entity.User">
+            <id column="u_id" property="id"></id>
+            <result column="account" property="account"></result>
+            <result column="name" property="name"></result>
+            <result column="token" property="token"></result>
+            <result column="intro" property="intro"></result>
+            <result column="u_gmt_create" property="gmtCreate"></result>
+            <result column="u_gmt_modified" property="gmtModified"></result>
+            <result column="avatar_url" property="avatarUrl"></result>
+        </association>
+    </resultMap>
+
+    <select id="queryNotificationsByUserId" resultMap="notificationDTO">
+        select n.id,n.type,n.gmt_create,n.status,n.outer_title,
+        u.id u_id,u.account,u.name,u.token,u.intro,u.gmt_create u_gmt_create,u.gmt_modified u_gmt_modified,u.avatar_url
+         from tb_notification n,tb_user u where n.replyer = u.id and n.receiver=#{receiver}
+    </select>
+</mapper>

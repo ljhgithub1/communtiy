@@ -134,6 +134,15 @@ public class QuestionServiceImpl implements IQuestionService {
         return i;
     }
 
+    @Override
+    public List<QuestionDTO> queryTheSameTagQuestions(QuestionDTO question) {
+        String tag = question.getTag();
+
+        tag = tag.replaceAll(",", "|");
+
+        return questionCustomizeMapper.queryTheSameTagQuestions(tag);
+    }
+
 
     /**
      * 更新问题信息

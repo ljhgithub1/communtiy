@@ -94,6 +94,9 @@ public class QuestionController {
 
         request.setAttribute("question",question);
 
+        List<QuestionDTO> questionDTOS = questionService.queryTheSameTagQuestions(question);
+
+        request.setAttribute("questions",questionDTOS);
         return "replies";
     }
 

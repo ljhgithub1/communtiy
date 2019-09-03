@@ -28,6 +28,7 @@ body{
 .avatar{
     width: 40px;
     height: 40px;
+    margin-right: 6px;
 }
 
 
@@ -64,6 +65,9 @@ body{
     color: #85B3FF;
 }
 
+.comment-content{
+    margin-left: 68px;
+}
 .comment-active{
     color: #85B3FF;
 }
@@ -74,4 +78,34 @@ body{
 }
 .sub-comment-btn{
     margin: 10px;
+}
+
+.hr-style{
+    margin-bottom: 0px;
+}
+
+.item-style{
+   margin-top:10px;
+}
+
+.input-style{
+    margin-top: 10px;
+}
+
+.comment-number{
+    margin-left: 8px;
+}
+
+.label{
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.relate-question{
+    margin-top: 7px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.badge{
+    background-color: #9E176C;
 }

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="life.langteng.community.mapper.CommentMapper">
-  <resultMap id="BaseResultMap" type="life.langteng.community.entity.Comment">
+<mapper namespace="life.langteng.community.mapper.NotificationMapper">
+  <resultMap id="BaseResultMap" type="life.langteng.community.entity.Notification">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="outer" jdbcType="INTEGER" property="outer" />
+    <result column="replyer" jdbcType="INTEGER" property="replyer" />
+    <result column="receiver" jdbcType="INTEGER" property="receiver" />
     <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="commenter" jdbcType="INTEGER" property="commenter" />
-    <result column="like_count" jdbcType="INTEGER" property="likeCount" />
     <result column="gmt_create" jdbcType="BIGINT" property="gmtCreate" />
-    <result column="gmt_modified" jdbcType="BIGINT" property="gmtModified" />
-    <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="outer_title" jdbcType="VARCHAR" property="outerTitle" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,15 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, parent_id, type, content, commenter, like_count, gmt_create, gmt_modified, comment_count
+    id, outer, replyer, receiver, type, gmt_create, status, outer_title
   </sql>
-  <select id="selectByExample" parameterType="life.langteng.community.entity.CommentExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="life.langteng.community.entity.NotificationExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_comment
+    from tb_notification
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -90,125 +89,114 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tb_comment
+    from tb_notification
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from tb_comment
+    delete from tb_notification
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="life.langteng.community.entity.CommentExample">
-    delete from tb_comment
+  <delete id="deleteByExample" parameterType="life.langteng.community.entity.NotificationExample">
+    delete from tb_notification
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="life.langteng.community.entity.Comment">
-    insert into tb_comment (id, parent_id, type, 
-      content, commenter, like_count, 
-      gmt_create, gmt_modified, comment_count
-      )
-    values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{content,jdbcType=VARCHAR}, #{commenter,jdbcType=INTEGER}, #{likeCount,jdbcType=INTEGER}, 
-      #{gmtCreate,jdbcType=BIGINT}, #{gmtModified,jdbcType=BIGINT}, #{commentCount,jdbcType=INTEGER}
-      )
+  <insert id="insert" parameterType="life.langteng.community.entity.Notification">
+    insert into tb_notification (id, outer, replyer, 
+      receiver, type, gmt_create, 
+      status, outer_title)
+    values (#{id,jdbcType=INTEGER}, #{outer,jdbcType=INTEGER}, #{replyer,jdbcType=INTEGER}, 
+      #{receiver,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{gmtCreate,jdbcType=BIGINT}, 
+      #{status,jdbcType=INTEGER}, #{outerTitle,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="life.langteng.community.entity.Comment">
-    insert into tb_comment
+  <insert id="insertSelective" parameterType="life.langteng.community.entity.Notification">
+    insert into tb_notification
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="parentId != null">
-        parent_id,
+      <if test="outer != null">
+        outer,
+      </if>
+      <if test="replyer != null">
+        replyer,
+      </if>
+      <if test="receiver != null">
+        receiver,
       </if>
       <if test="type != null">
         type,
       </if>
-      <if test="content != null">
-        content,
-      </if>
-      <if test="commenter != null">
-        commenter,
-      </if>
-      <if test="likeCount != null">
-        like_count,
-      </if>
       <if test="gmtCreate != null">
         gmt_create,
       </if>
-      <if test="gmtModified != null">
-        gmt_modified,
+      <if test="status != null">
+        status,
       </if>
-      <if test="commentCount != null">
-        comment_count,
+      <if test="outerTitle != null">
+        outer_title,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="parentId != null">
-        #{parentId,jdbcType=INTEGER},
+      <if test="outer != null">
+        #{outer,jdbcType=INTEGER},
+      </if>
+      <if test="replyer != null">
+        #{replyer,jdbcType=INTEGER},
+      </if>
+      <if test="receiver != null">
+        #{receiver,jdbcType=INTEGER},
       </if>
       <if test="type != null">
         #{type,jdbcType=INTEGER},
       </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="commenter != null">
-        #{commenter,jdbcType=INTEGER},
-      </if>
-      <if test="likeCount != null">
-        #{likeCount,jdbcType=INTEGER},
-      </if>
       <if test="gmtCreate != null">
         #{gmtCreate,jdbcType=BIGINT},
       </if>
-      <if test="gmtModified != null">
-        #{gmtModified,jdbcType=BIGINT},
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
       </if>
-      <if test="commentCount != null">
-        #{commentCount,jdbcType=INTEGER},
+      <if test="outerTitle != null">
+        #{outerTitle,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="life.langteng.community.entity.CommentExample" resultType="java.lang.Long">
-    select count(*) from tb_comment
+  <select id="countByExample" parameterType="life.langteng.community.entity.NotificationExample" resultType="java.lang.Long">
+    select count(*) from tb_notification
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update tb_comment
+    update tb_notification
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.parentId != null">
-        parent_id = #{record.parentId,jdbcType=INTEGER},
+      <if test="record.outer != null">
+        outer = #{record.outer,jdbcType=INTEGER},
+      </if>
+      <if test="record.replyer != null">
+        replyer = #{record.replyer,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiver != null">
+        receiver = #{record.receiver,jdbcType=INTEGER},
       </if>
       <if test="record.type != null">
         type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.content != null">
-        content = #{record.content,jdbcType=VARCHAR},
-      </if>
-      <if test="record.commenter != null">
-        commenter = #{record.commenter,jdbcType=INTEGER},
-      </if>
-      <if test="record.likeCount != null">
-        like_count = #{record.likeCount,jdbcType=INTEGER},
-      </if>
       <if test="record.gmtCreate != null">
         gmt_create = #{record.gmtCreate,jdbcType=BIGINT},
       </if>
-      <if test="record.gmtModified != null">
-        gmt_modified = #{record.gmtModified,jdbcType=BIGINT},
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
       </if>
-      <if test="record.commentCount != null">
-        comment_count = #{record.commentCount,jdbcType=INTEGER},
+      <if test="record.outerTitle != null">
+        outer_title = #{record.outerTitle,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -216,60 +204,55 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update tb_comment
+    update tb_notification
     set id = #{record.id,jdbcType=INTEGER},
-      parent_id = #{record.parentId,jdbcType=INTEGER},
+      outer = #{record.outer,jdbcType=INTEGER},
+      replyer = #{record.replyer,jdbcType=INTEGER},
+      receiver = #{record.receiver,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
-      content = #{record.content,jdbcType=VARCHAR},
-      commenter = #{record.commenter,jdbcType=INTEGER},
-      like_count = #{record.likeCount,jdbcType=INTEGER},
       gmt_create = #{record.gmtCreate,jdbcType=BIGINT},
-      gmt_modified = #{record.gmtModified,jdbcType=BIGINT},
-      comment_count = #{record.commentCount,jdbcType=INTEGER}
+      status = #{record.status,jdbcType=INTEGER},
+      outer_title = #{record.outerTitle,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="life.langteng.community.entity.Comment">
-    update tb_comment
+  <update id="updateByPrimaryKeySelective" parameterType="life.langteng.community.entity.Notification">
+    update tb_notification
     <set>
-      <if test="parentId != null">
-        parent_id = #{parentId,jdbcType=INTEGER},
+      <if test="outer != null">
+        outer = #{outer,jdbcType=INTEGER},
+      </if>
+      <if test="replyer != null">
+        replyer = #{replyer,jdbcType=INTEGER},
+      </if>
+      <if test="receiver != null">
+        receiver = #{receiver,jdbcType=INTEGER},
       </if>
       <if test="type != null">
         type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="content != null">
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="commenter != null">
-        commenter = #{commenter,jdbcType=INTEGER},
-      </if>
-      <if test="likeCount != null">
-        like_count = #{likeCount,jdbcType=INTEGER},
-      </if>
       <if test="gmtCreate != null">
         gmt_create = #{gmtCreate,jdbcType=BIGINT},
       </if>
-      <if test="gmtModified != null">
-        gmt_modified = #{gmtModified,jdbcType=BIGINT},
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="commentCount != null">
-        comment_count = #{commentCount,jdbcType=INTEGER},
+      <if test="outerTitle != null">
+        outer_title = #{outerTitle,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="life.langteng.community.entity.Comment">
-    update tb_comment
-    set parent_id = #{parentId,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="life.langteng.community.entity.Notification">
+    update tb_notification
+    set outer = #{outer,jdbcType=INTEGER},
+      replyer = #{replyer,jdbcType=INTEGER},
+      receiver = #{receiver,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
-      content = #{content,jdbcType=VARCHAR},
-      commenter = #{commenter,jdbcType=INTEGER},
-      like_count = #{likeCount,jdbcType=INTEGER},
       gmt_create = #{gmtCreate,jdbcType=BIGINT},
-      gmt_modified = #{gmtModified,jdbcType=BIGINT},
-      comment_count = #{commentCount,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      outer_title = #{outerTitle,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

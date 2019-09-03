@@ -1,13 +1,14 @@
 package life.langteng.community.controller;
 
 import life.langteng.community.bean.ResultMap;
+import life.langteng.community.dto.CommentDTO;
 import life.langteng.community.entity.Comment;
 import life.langteng.community.service.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -36,6 +37,14 @@ public class CommentController {
         return resultMap;
     }
 
+    @ResponseBody
+    @GetMapping("/subComment")
+    public ResultMap subComments(@RequestParam("commentId") Integer commentId){
 
+        List<CommentDTO> commentDTOS = commentService.queryAllCommentComments(commentId);
+        ResultMap resultMap = new ResultMap(2000);
+        resultMap.putData("comments",commentDTOS);
+        return resultMap;
+    }
 
 }

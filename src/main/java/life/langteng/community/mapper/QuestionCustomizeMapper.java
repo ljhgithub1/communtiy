@@ -21,4 +21,7 @@ public interface QuestionCustomizeMapper {
     int incViewCount(@Param("questionId") Integer questionId);
 
     int incCommentCount(@Param("questionId") Integer questionId,@Param("commentCount")Integer commentCount);
+
+    List<QuestionDTO> queryTheSameTagQuestions(String tag);
+
 }

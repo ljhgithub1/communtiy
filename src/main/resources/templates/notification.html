@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>publish</title>
+    <!--注意:这里的link需要加 rel="stylesheet",否则没有样式-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+    <script th:src="@{/js/jquery-3.3.1.min.js}" src="/jquery/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!--顶部导航条-->
+<div th:replace="~{navfragment :: navFragment}"></div>
+<!-- 正文 -->
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-xs-12 col-sm-12 col-md-12">
+            <h2>我的通知:</h2>
+            <hr/>
+
+            <!--
+             th:each 使用在哪个标签上面，哪个标签及其包含的标签都会进入循环
+            -->
+            <div class="media" th:each="question:${pageHelper.questions}" th:if="${pageHelper != null}">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" src="https://avatars1.githubusercontent.com/u/48481596?v=4" alt="avatar">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <!-- 问题题目 -->
+                    <a th:href="@{/profile/replies/}+${question.id}"><h4 class="media-heading" th:text="${question.title}"></h4></a>
+                    <!-- 阅读数、点赞数、发布时间 -->
+                    <!--
+                      使用 thymeleaf 的 dates.format 工具方法 , 第一个参数如果需要从request中获取，或者使用其他工具类，都不在需要加 ${},加了会报错
+                    -->
+                    [[${question.commentCount}]]评论 [[${question.viewCount}]]阅读 [[${question.likeCount}]]点赞 [[${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm:ss')}]]
+                </div>
+            </div>
+            <!-- 分页 -->
+            <div th:if="${pageHelper != null}" >
+                <nav aria-label="Page navigation" th:class="pageStyle">
+                    <ul class="pagination">
+                        <li th:if="${pageHelper.firstPage}">
+                            <a th:href="@{/profile/questions?currentPage=}+${pageHelper.homePage}" href="#" aria-label="Previous">
+                                <span aria-hidden="true">首页</span>
+                            </a>
+                        </li>
+                        <li th:if="${pageHelper.previous}" >
+                            <a th:href="@{/profile/questions?currentPage=}+(${pageHelper.currentPage}-1)" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <!--
+                         thymeleaf 中如何拼接请求地址
+
+                             th:href="@{/?currentPage=}+${number}"
+                        -->
+                        <li th:each="number : ${pageHelper.pageNumbers}" th:class="${pageHelper.currentPage == number ? 'active':''}"><a th:href="@{/profile/questions?currentPage=}+${number}">[[${number}]]</a></li>
+
+
+                        <li th:if="${pageHelper.next}">
+                            <a th:href="@{/profile/questions?currentPage=}+(${pageHelper.currentPage}+1)" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li th:if="${pageHelper.lastPage}">
+                            <a  th:href="@{/profile/questions?currentPage=}+${pageHelper.pageCount}" href="#" aria-label="">
+                                <span aria-hidden="true">末页</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-xs-12 col-sm-12 col-md-12">
+            <div class="list-group">
+                <a href="#" class="list-group-item active">我的问题</a>
+                <a href="#" class="list-group-item">我的回复</a>
+                <a href="#" class="list-group-item">其他1</a>
+                <a href="#" class="list-group-item">其他2</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

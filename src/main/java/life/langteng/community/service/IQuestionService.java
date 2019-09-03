@@ -80,4 +80,6 @@ public interface IQuestionService {
      * @return
      */
     int incCommentCount(Integer questionId,Integer commentCount);
+
+    List<QuestionDTO> queryTheSameTagQuestions(QuestionDTO question);
 }

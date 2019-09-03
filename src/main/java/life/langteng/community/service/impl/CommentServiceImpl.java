@@ -1,19 +1,17 @@
 package life.langteng.community.service.impl;
 
 import life.langteng.community.bean.CommentType;
+import life.langteng.community.bean.NotificationType;
 import life.langteng.community.bean.ResultMap;
 import life.langteng.community.dto.CommentDTO;
 import life.langteng.community.entity.Comment;
+import life.langteng.community.entity.Notification;
 import life.langteng.community.entity.Question;
 import life.langteng.community.entity.User;
 import life.langteng.community.exception.CommentQuestionNotFoundException;
 import life.langteng.community.exception.CommentResourceNotFoundException;
 import life.langteng.community.exception.CommentTypeNotFountException;
-import life.langteng.community.exception.QuestionResourceNotFoundException;
-import life.langteng.community.mapper.CommentCustomizeMapper;
-import life.langteng.community.mapper.CommentMapper;
-import life.langteng.community.mapper.QuestionCustomizeMapper;
-import life.langteng.community.mapper.QuestionMapper;
+import life.langteng.community.mapper.*;
 import life.langteng.community.service.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +39,9 @@ public class CommentServiceImpl implements ICommentService {
 
     @Autowired
     private CommentCustomizeMapper commentCustomizeMapper;
+
+    @Autowired
+    private NotificationMapper  notificationMapper;
 
 
     @Override
@@ -96,6 +97,7 @@ public class CommentServiceImpl implements ICommentService {
         comment.setLikeCount(0);
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(comment.getGmtCreate());
+        comment.setCommentCount(0);
 
         // 评论问题
         if(comment.getType() == 1){
@@ -106,8 +108,11 @@ public class CommentServiceImpl implements ICommentService {
             // 问题回复数加一
             questionCustomizeMapper.incCommentCount(question.getId(),1);
 
-
             commentMapper.insertSelective(comment);
+
+            // 记录问题提示记录
+            notification(comment.getParentId(),question.getCreator(),comment.getCommenter(),NotificationType.COMMENT_QUESTION,question.getTitle());
+
 
         }else if(comment.getType() == 2){ // 评论回复
 
@@ -116,7 +121,11 @@ public class CommentServiceImpl implements ICommentService {
             if (com == null){
                 throw new CommentResourceNotFoundException(COMMENT_NOT_FOUND);
             }
+            // 给其父类添加评论数
+            incCommentCount(comment.getParentId(),1);
             commentMapper.insertSelective(comment);
+            // 记录问题提示记录
+            notification(comment.getParentId(),com.getCommenter(),comment.getCommenter(),NotificationType.COMMENT_REPLY,com.getContent());
         }
 
 
@@ -125,8 +134,47 @@ public class CommentServiceImpl implements ICommentService {
         return resultMap;
     }
 
+    /**
+     *
+     * @param outer       问题或者回复的id
+     * @param receiver     接收者
+     * @param replyer      回复者
+     * @param type         类型
+     */
+    private void notification(Integer outer,Integer receiver,Integer replyer,NotificationType type,String title){
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setOuter(outer);
+        notification.setReceiver(receiver);
+        notification.setReplyer(replyer);
+        notification.setType(type.getCode());
+        notification.setStatus(0);
+        notification.setOuterTitle(title);
+        notificationMapper.insertSelective(notification);
+    }
+
+
+    private void incCommentCount(Integer commentId,Integer count){
+        Comment comment = new Comment();
+        comment.setId(commentId);
+        comment.setCommentCount(count);
+        incCommentCount(comment);
+    }
+
+    private void incCommentCount(Comment comment){
+        commentCustomizeMapper.incCommentCount(comment);
+    }
+
+
+
     @Override
     public List<CommentDTO> queryAllQuestionComments(Integer questionId) {
-        return commentCustomizeMapper.queryAllQuestionComments(questionId);
+        return commentCustomizeMapper.queryAllCommentsByParentId(questionId,1);
     }
+
+    @Override
+    public List<CommentDTO> queryAllCommentComments(Integer commentId) {
+        return commentCustomizeMapper.queryAllCommentsByParentId(commentId,2);
+    }
+
 }

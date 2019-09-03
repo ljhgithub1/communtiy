@@ -2,6 +2,7 @@ package life.langteng.community.bean;
 
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -18,7 +19,7 @@ public class ResultMap {
     /**
      * 数据
      */
-    private Map<String,Object>  data;
+    private Map<String,Object>  data = new HashMap<>();
 
 
     public ResultMap(){}

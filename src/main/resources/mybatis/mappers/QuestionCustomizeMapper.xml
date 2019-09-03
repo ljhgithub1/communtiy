@@ -35,7 +35,7 @@
   <select id="queryQuestionByPage" resultMap="questionDTO">
     select q.id,q.title,q.description,q.tag,q.creator,q.gmt_create,q.gmt_modified,q.comment_count,q.view_count,q.like_count,
           u.id uid,u.account,u.name,u.token,u.intro,u.gmt_create u_gmt_create,u.gmt_modified u_gmt_modified,u.avatar_url
-    from tb_question q ,tb_user u where q.creator=u.id limit #{position},#{pageSize}
+    from tb_question q ,tb_user u where q.creator=u.id order by q.gmt_create desc limit #{position},#{pageSize}
   </select>
 
   <select id="getQuestionDTOById" resultMap="questionDTO">
@@ -57,4 +57,11 @@
   <update id="incCommentCount">
     update tb_question set comment_count = comment_count + #{commentCount} where id = #{questionId}
   </update>
+
+  <select id="queryTheSameTagQuestions" resultMap="questionDTO">
+    select q.id,q.title,q.description,q.tag,q.creator,q.gmt_create,q.gmt_modified,q.comment_count,q.view_count,q.like_count,
+          u.id uid,u.account,u.name,u.token,u.intro,u.gmt_create u_gmt_create,u.gmt_modified u_gmt_modified,u.avatar_url
+    from tb_question q ,tb_user u where q.creator=u.id and q.tag REGEXP #{tag}
+  </select>
+
 </mapper>
