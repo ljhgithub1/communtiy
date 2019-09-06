@@ -25,8 +25,18 @@ public class IndexController {
      */
     @RequestMapping("/")
     public String index(HttpServletRequest request,
+                        @RequestParam(name = "search",required = false) String search,
                         @RequestParam(name = "currentPage",defaultValue = "1") Integer currentPage,
-                        @RequestParam(name = "pageSize",defaultValue = "5") Integer pageSize){
+                        @RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize){
+
+        if (search != null && search.trim().equals("")) {
+            search = null;
+        }
+
+        if (search != null){
+            search = search.replaceAll(" ","|");
+            request.setAttribute("search",search);
+        }
 
         /**
          * 容错 最小值
@@ -34,7 +44,7 @@ public class IndexController {
         if (currentPage < 1) {
             currentPage = 1;
         }
-        int total = (int) questionService.queryCount();
+        int total = (int) questionService.queryCount(search);
 
         int totalPages = ((total % pageSize == 0) ? (total / pageSize) : (total / pageSize + 1));
 
@@ -50,7 +60,8 @@ public class IndexController {
          *
          * ------ > 这里以后考虑使用缓存
          */
-        List<QuestionDTO> questions = questionService.queryQuestionByPage(currentPage,pageSize);
+
+        List<QuestionDTO> questions = questionService.queryQuestionByPage(search,currentPage,pageSize);
 
         PageHelperDTO  pageHelperDTO = null;
 

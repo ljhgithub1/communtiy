@@ -3,13 +3,13 @@
 <mapper namespace="life.langteng.community.mapper.NotificationMapper">
   <resultMap id="BaseResultMap" type="life.langteng.community.entity.Notification">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="outer" jdbcType="INTEGER" property="outer" />
+    <result column="outter" jdbcType="INTEGER" property="outter" />
     <result column="replyer" jdbcType="INTEGER" property="replyer" />
     <result column="receiver" jdbcType="INTEGER" property="receiver" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="gmt_create" jdbcType="BIGINT" property="gmtCreate" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="outer_title" jdbcType="VARCHAR" property="outerTitle" />
+    <result column="outter_title" jdbcType="VARCHAR" property="outterTitle" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, outer, replyer, receiver, type, gmt_create, status, outer_title
+    id, outter, replyer, receiver, type, gmt_create, status, outter_title
   </sql>
   <select id="selectByExample" parameterType="life.langteng.community.entity.NotificationExample" resultMap="BaseResultMap">
     select
@@ -103,12 +103,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="life.langteng.community.entity.Notification">
-    insert into tb_notification (id, outer, replyer, 
+    insert into tb_notification (id, outter, replyer, 
       receiver, type, gmt_create, 
-      status, outer_title)
-    values (#{id,jdbcType=INTEGER}, #{outer,jdbcType=INTEGER}, #{replyer,jdbcType=INTEGER}, 
+      status, outter_title)
+    values (#{id,jdbcType=INTEGER}, #{outter,jdbcType=INTEGER}, #{replyer,jdbcType=INTEGER}, 
       #{receiver,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{gmtCreate,jdbcType=BIGINT}, 
-      #{status,jdbcType=INTEGER}, #{outerTitle,jdbcType=VARCHAR})
+      #{status,jdbcType=INTEGER}, #{outterTitle,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="life.langteng.community.entity.Notification">
     insert into tb_notification
@@ -116,8 +116,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="outer != null">
-        outer,
+      <if test="outter != null">
+        outter,
       </if>
       <if test="replyer != null">
         replyer,
@@ -134,16 +134,16 @@
       <if test="status != null">
         status,
       </if>
-      <if test="outerTitle != null">
-        outer_title,
+      <if test="outterTitle != null">
+        outter_title,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="outer != null">
-        #{outer,jdbcType=INTEGER},
+      <if test="outter != null">
+        #{outter,jdbcType=INTEGER},
       </if>
       <if test="replyer != null">
         #{replyer,jdbcType=INTEGER},
@@ -160,8 +160,8 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="outerTitle != null">
-        #{outerTitle,jdbcType=VARCHAR},
+      <if test="outterTitle != null">
+        #{outterTitle,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -177,8 +177,8 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.outer != null">
-        outer = #{record.outer,jdbcType=INTEGER},
+      <if test="record.outter != null">
+        outter = #{record.outter,jdbcType=INTEGER},
       </if>
       <if test="record.replyer != null">
         replyer = #{record.replyer,jdbcType=INTEGER},
@@ -195,8 +195,8 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
-      <if test="record.outerTitle != null">
-        outer_title = #{record.outerTitle,jdbcType=VARCHAR},
+      <if test="record.outterTitle != null">
+        outter_title = #{record.outterTitle,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -206,13 +206,13 @@
   <update id="updateByExample" parameterType="map">
     update tb_notification
     set id = #{record.id,jdbcType=INTEGER},
-      outer = #{record.outer,jdbcType=INTEGER},
+      outter = #{record.outter,jdbcType=INTEGER},
       replyer = #{record.replyer,jdbcType=INTEGER},
       receiver = #{record.receiver,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       gmt_create = #{record.gmtCreate,jdbcType=BIGINT},
       status = #{record.status,jdbcType=INTEGER},
-      outer_title = #{record.outerTitle,jdbcType=VARCHAR}
+      outter_title = #{record.outterTitle,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -220,8 +220,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="life.langteng.community.entity.Notification">
     update tb_notification
     <set>
-      <if test="outer != null">
-        outer = #{outer,jdbcType=INTEGER},
+      <if test="outter != null">
+        outter = #{outter,jdbcType=INTEGER},
       </if>
       <if test="replyer != null">
         replyer = #{replyer,jdbcType=INTEGER},
@@ -238,21 +238,21 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="outerTitle != null">
-        outer_title = #{outerTitle,jdbcType=VARCHAR},
+      <if test="outterTitle != null">
+        outter_title = #{outterTitle,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="life.langteng.community.entity.Notification">
     update tb_notification
-    set outer = #{outer,jdbcType=INTEGER},
+    set outter = #{outter,jdbcType=INTEGER},
       replyer = #{replyer,jdbcType=INTEGER},
       receiver = #{receiver,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       gmt_create = #{gmtCreate,jdbcType=BIGINT},
       status = #{status,jdbcType=INTEGER},
-      outer_title = #{outerTitle,jdbcType=VARCHAR}
+      outter_title = #{outterTitle,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

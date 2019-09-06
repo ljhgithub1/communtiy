@@ -164,63 +164,63 @@ public class NotificationExample {
             return (Criteria) this;
         }
 
-        public Criteria andOuterIsNull() {
-            addCriterion("outer is null");
+        public Criteria andOutterIsNull() {
+            addCriterion("outter is null");
             return (Criteria) this;
         }
 
-        public Criteria andOuterIsNotNull() {
-            addCriterion("outer is not null");
+        public Criteria andOutterIsNotNull() {
+            addCriterion("outter is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOuterEqualTo(Integer value) {
-            addCriterion("outer =", value, "outer");
+        public Criteria andOutterEqualTo(Integer value) {
+            addCriterion("outter =", value, "outter");
             return (Criteria) this;
         }
 
-        public Criteria andOuterNotEqualTo(Integer value) {
-            addCriterion("outer <>", value, "outer");
+        public Criteria andOutterNotEqualTo(Integer value) {
+            addCriterion("outter <>", value, "outter");
             return (Criteria) this;
         }
 
-        public Criteria andOuterGreaterThan(Integer value) {
-            addCriterion("outer >", value, "outer");
+        public Criteria andOutterGreaterThan(Integer value) {
+            addCriterion("outter >", value, "outter");
             return (Criteria) this;
         }
 
-        public Criteria andOuterGreaterThanOrEqualTo(Integer value) {
-            addCriterion("outer >=", value, "outer");
+        public Criteria andOutterGreaterThanOrEqualTo(Integer value) {
+            addCriterion("outter >=", value, "outter");
             return (Criteria) this;
         }
 
-        public Criteria andOuterLessThan(Integer value) {
-            addCriterion("outer <", value, "outer");
+        public Criteria andOutterLessThan(Integer value) {
+            addCriterion("outter <", value, "outter");
             return (Criteria) this;
         }
 
-        public Criteria andOuterLessThanOrEqualTo(Integer value) {
-            addCriterion("outer <=", value, "outer");
+        public Criteria andOutterLessThanOrEqualTo(Integer value) {
+            addCriterion("outter <=", value, "outter");
             return (Criteria) this;
         }
 
-        public Criteria andOuterIn(List<Integer> values) {
-            addCriterion("outer in", values, "outer");
+        public Criteria andOutterIn(List<Integer> values) {
+            addCriterion("outter in", values, "outter");
             return (Criteria) this;
         }
 
-        public Criteria andOuterNotIn(List<Integer> values) {
-            addCriterion("outer not in", values, "outer");
+        public Criteria andOutterNotIn(List<Integer> values) {
+            addCriterion("outter not in", values, "outter");
             return (Criteria) this;
         }
 
-        public Criteria andOuterBetween(Integer value1, Integer value2) {
-            addCriterion("outer between", value1, value2, "outer");
+        public Criteria andOutterBetween(Integer value1, Integer value2) {
+            addCriterion("outter between", value1, value2, "outter");
             return (Criteria) this;
         }
 
-        public Criteria andOuterNotBetween(Integer value1, Integer value2) {
-            addCriterion("outer not between", value1, value2, "outer");
+        public Criteria andOutterNotBetween(Integer value1, Integer value2) {
+            addCriterion("outter not between", value1, value2, "outter");
             return (Criteria) this;
         }
 
@@ -524,73 +524,73 @@ public class NotificationExample {
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleIsNull() {
-            addCriterion("outer_title is null");
+        public Criteria andOutterTitleIsNull() {
+            addCriterion("outter_title is null");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleIsNotNull() {
-            addCriterion("outer_title is not null");
+        public Criteria andOutterTitleIsNotNull() {
+            addCriterion("outter_title is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleEqualTo(String value) {
-            addCriterion("outer_title =", value, "outerTitle");
+        public Criteria andOutterTitleEqualTo(String value) {
+            addCriterion("outter_title =", value, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleNotEqualTo(String value) {
-            addCriterion("outer_title <>", value, "outerTitle");
+        public Criteria andOutterTitleNotEqualTo(String value) {
+            addCriterion("outter_title <>", value, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleGreaterThan(String value) {
-            addCriterion("outer_title >", value, "outerTitle");
+        public Criteria andOutterTitleGreaterThan(String value) {
+            addCriterion("outter_title >", value, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleGreaterThanOrEqualTo(String value) {
-            addCriterion("outer_title >=", value, "outerTitle");
+        public Criteria andOutterTitleGreaterThanOrEqualTo(String value) {
+            addCriterion("outter_title >=", value, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleLessThan(String value) {
-            addCriterion("outer_title <", value, "outerTitle");
+        public Criteria andOutterTitleLessThan(String value) {
+            addCriterion("outter_title <", value, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleLessThanOrEqualTo(String value) {
-            addCriterion("outer_title <=", value, "outerTitle");
+        public Criteria andOutterTitleLessThanOrEqualTo(String value) {
+            addCriterion("outter_title <=", value, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleLike(String value) {
-            addCriterion("outer_title like", value, "outerTitle");
+        public Criteria andOutterTitleLike(String value) {
+            addCriterion("outter_title like", value, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleNotLike(String value) {
-            addCriterion("outer_title not like", value, "outerTitle");
+        public Criteria andOutterTitleNotLike(String value) {
+            addCriterion("outter_title not like", value, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleIn(List<String> values) {
-            addCriterion("outer_title in", values, "outerTitle");
+        public Criteria andOutterTitleIn(List<String> values) {
+            addCriterion("outter_title in", values, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleNotIn(List<String> values) {
-            addCriterion("outer_title not in", values, "outerTitle");
+        public Criteria andOutterTitleNotIn(List<String> values) {
+            addCriterion("outter_title not in", values, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleBetween(String value1, String value2) {
-            addCriterion("outer_title between", value1, value2, "outerTitle");
+        public Criteria andOutterTitleBetween(String value1, String value2) {
+            addCriterion("outter_title between", value1, value2, "outterTitle");
             return (Criteria) this;
         }
 
-        public Criteria andOuterTitleNotBetween(String value1, String value2) {
-            addCriterion("outer_title not between", value1, value2, "outerTitle");
+        public Criteria andOutterTitleNotBetween(String value1, String value2) {
+            addCriterion("outter_title not between", value1, value2, "outterTitle");
             return (Criteria) this;
         }
     }

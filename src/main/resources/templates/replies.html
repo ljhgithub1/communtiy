@@ -6,10 +6,14 @@
     <!--注意:这里的link需要加 rel="stylesheet",否则没有样式-->
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/community.css"/>
+    <link rel="stylesheet" href="/css/editormd.preview.css" />
     <script th:src="@{/js/jquery-3.3.1.min.js}" src="/jquery/jquery-3.3.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/comment.js"></script>
     <script src="/js/moment.js"></script>
+    <script src="/js/editormd.js"></script>
+    <script src="/lib/marked.min.js"></script>
+    <script src="/lib/prettify.min.js"></script>
 </head>
 <body>
 <!--顶部导航条-->
@@ -37,9 +41,18 @@
             <!-- 展示问题的描述信息 -->
             <div class="row">
                 <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
-                        <div>
-                            <h3 th:text="${question.description}"></h3>
+                        <div id="description-view">
+                            <textarea style="display:none;" th:text="${question.description}"></textarea>
                         </div>
+                    <script type="text/javascript">
+                        $(function() {
+                            var testView = editormd.markdownToHTML("description-view", {
+                                // markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set Markdown text
+                                // htmlDecode : true,  // Enable / disable HTML tag encode.
+                                // htmlDecode : "style,script,iframe",  // Note: If enabled, you should filter some dangerous HTML tags for website security.
+                            });
+                        });
+                    </script>
                 </div>
             </div>
             <hr/>
@@ -164,7 +177,7 @@
     </div>
 
 </div>
-
+<div th:replace="~{footerfragment :: footerFragment}"></div>
 
 </body>
 </html>

@@ -9,6 +9,8 @@ public class NotificationDTO {
 
     private Integer type;
 
+    private Integer outter;
+
     private String typeHint;
 
     private Long gmtCreate;
@@ -17,8 +19,8 @@ public class NotificationDTO {
 
     private User replyer;
 
-    private String receiverName;
+    private String replyerName;
 
-    private String outerTitle;
+    private String outterTitle;
 
 }

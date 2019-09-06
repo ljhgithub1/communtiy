@@ -109,3 +109,24 @@ body{
 .badge{
     background-color: #9E176C;
 }
+.notification{
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+
+.a-style{
+    cursor: pointer;
+}
+
+.list-group{
+}
+
+.list-group .list-group-item{
+
+}
+
+.footer{
+    text-align: center;
+    margin-top: 30px;
+}

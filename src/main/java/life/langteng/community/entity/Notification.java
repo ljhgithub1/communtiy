@@ -3,7 +3,7 @@ package life.langteng.community.entity;
 public class Notification {
     private Integer id;
 
-    private Integer outer;
+    private Integer outter;
 
     private Integer replyer;
 
@@ -15,7 +15,7 @@ public class Notification {
 
     private Integer status;
 
-    private String outerTitle;
+    private String outterTitle;
 
     public Integer getId() {
         return id;
@@ -25,12 +25,12 @@ public class Notification {
         this.id = id;
     }
 
-    public Integer getOuter() {
-        return outer;
+    public Integer getOutter() {
+        return outter;
     }
 
-    public void setOuter(Integer outer) {
-        this.outer = outer;
+    public void setOutter(Integer outter) {
+        this.outter = outter;
     }
 
     public Integer getReplyer() {
@@ -73,11 +73,11 @@ public class Notification {
         this.status = status;
     }
 
-    public String getOuterTitle() {
-        return outerTitle;
+    public String getOutterTitle() {
+        return outterTitle;
     }
 
-    public void setOuterTitle(String outerTitle) {
-        this.outerTitle = outerTitle == null ? null : outerTitle.trim();
+    public void setOutterTitle(String outterTitle) {
+        this.outterTitle = outterTitle == null ? null : outterTitle.trim();
     }
 }

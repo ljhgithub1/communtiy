@@ -22,17 +22,18 @@ public interface IQuestionService {
 
     /**
      * 查询分页数据
+     * @param search
      * @param currentPage
      * @param pageSize
      * @return
      */
-    List<QuestionDTO> queryQuestionByPage(Integer currentPage, Integer pageSize);
+    List<QuestionDTO> queryQuestionByPage(String search,Integer currentPage, Integer pageSize);
 
     /**
      * 查询中的记录数
      * @return
      */
-    long queryCount();
+    long queryCount(String search);
 
     /**
      * 通过用户id，查询该用户发起的所有问题

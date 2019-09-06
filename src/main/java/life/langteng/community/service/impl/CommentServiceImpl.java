@@ -111,7 +111,7 @@ public class CommentServiceImpl implements ICommentService {
             commentMapper.insertSelective(comment);
 
             // 记录问题提示记录
-            notification(comment.getParentId(),question.getCreator(),comment.getCommenter(),NotificationType.COMMENT_QUESTION,question.getTitle());
+            notification(question.getId(),question.getCreator(),comment.getCommenter(),NotificationType.COMMENT_QUESTION,question.getTitle());
 
 
         }else if(comment.getType() == 2){ // 评论回复
@@ -121,11 +121,18 @@ public class CommentServiceImpl implements ICommentService {
             if (com == null){
                 throw new CommentResourceNotFoundException(COMMENT_NOT_FOUND);
             }
+            // 获取问题，评论的目标评论的问题 ---- 如果有多级评论，那怎么找得到最主要的问题呢？？  建议可以添加一个数据库字段
+            Question question = questionMapper.selectByPrimaryKey(com.getParentId());
+
+            if (question == null){
+                throw new CommentQuestionNotFoundException(COMMENT_QUESTION_NOT_FOUND);
+            }
+
             // 给其父类添加评论数
             incCommentCount(comment.getParentId(),1);
             commentMapper.insertSelective(comment);
             // 记录问题提示记录
-            notification(comment.getParentId(),com.getCommenter(),comment.getCommenter(),NotificationType.COMMENT_REPLY,com.getContent());
+            notification(question.getId(),com.getCommenter(),comment.getCommenter(),NotificationType.COMMENT_REPLY,question.getTitle());
         }
 
 
@@ -144,12 +151,12 @@ public class CommentServiceImpl implements ICommentService {
     private void notification(Integer outer,Integer receiver,Integer replyer,NotificationType type,String title){
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
-        notification.setOuter(outer);
+        notification.setOutter(outer);
         notification.setReceiver(receiver);
         notification.setReplyer(replyer);
         notification.setType(type.getCode());
         notification.setStatus(0);
-        notification.setOuterTitle(title);
+        notification.setOutterTitle(title);
         notificationMapper.insertSelective(notification);
     }
 

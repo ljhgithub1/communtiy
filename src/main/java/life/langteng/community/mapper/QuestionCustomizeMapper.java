@@ -12,7 +12,7 @@ public interface QuestionCustomizeMapper {
 
     List<QuestionDTO> queryAllQuestions();
 
-    List<QuestionDTO> queryQuestionByPage(@Param("position") Integer position, @Param("pageSize") Integer pageSize);
+    List<QuestionDTO> queryQuestionByPage(@Param("search") String search,@Param("position") Integer position, @Param("pageSize") Integer pageSize);
 
     QuestionDTO getQuestionDTOById(@Param("questionId") Integer questionId);
 
@@ -22,6 +22,7 @@ public interface QuestionCustomizeMapper {
 
     int incCommentCount(@Param("questionId") Integer questionId,@Param("commentCount")Integer commentCount);
 
-    List<QuestionDTO> queryTheSameTagQuestions(String tag);
+    List<QuestionDTO> queryTheSameTagQuestions(@Param("tag") String tag);
 
+    long queryCount(@Param("search") String search);
 }

@@ -6,6 +6,7 @@ import life.langteng.community.dto.QuestionDTO;
 import life.langteng.community.entity.Question;
 import life.langteng.community.entity.User;
 import life.langteng.community.service.ICommentService;
+import life.langteng.community.service.INotificationService;
 import life.langteng.community.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,9 @@ public class QuestionController {
 
     @Autowired
     private ICommentService commentService;
+
+    @Autowired
+    private INotificationService notificationService;
 
     /**
      * 用来展示用户提出的所有问题
@@ -77,7 +81,15 @@ public class QuestionController {
 
     @GetMapping("/profile/replies/{id}")
     public String userReplies(@PathVariable(name = "id") Integer questionId,
-                              HttpServletRequest request){
+                              HttpServletRequest request,
+                              @RequestParam(value = "notificationId",required = false) Integer notificationId){
+
+        // 修改提示的状态
+        notificationService.editNotificationStatus(notificationId);
+        // 更新session中的提示
+        Integer count = notificationService.getNotificationCountByUserId();
+        request.getSession().setAttribute("notificationCount",count);
+
 
         // 修改 当前问题的浏览数  我们需要考虑并发问题，我们应该在数据库的基础上去自增1，
         // 而不是，将值取出来，加一后再存入数据库

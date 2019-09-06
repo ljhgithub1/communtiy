@@ -7,4 +7,6 @@ import java.util.List;
 public interface NotificationCustomizeMapper {
 
     List<NotificationDTO> queryNotificationsByUserId(int userId);
+
+    int getNotificationCountByUserId(Integer userId);
 }

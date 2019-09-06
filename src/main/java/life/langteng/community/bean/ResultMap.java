@@ -2,6 +2,9 @@ package life.langteng.community.bean;
 
 import lombok.Data;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,8 +33,4 @@ public class ResultMap {
         this.data.put(key,value);
         return this;
     }
-
-
-
-
 }

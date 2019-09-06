@@ -28,7 +28,6 @@
             <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 发现</h2>
             <hr/>
 
-
             <!--
              th:each 使用在哪个标签上面，哪个标签及其包含的标签都会进入循环
             -->
@@ -47,6 +46,7 @@
                     -->
                     [[${question.commentCount}]]评论 [[${question.viewCount}]]阅读 [[${question.likeCount}]]点赞 [[${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm:ss')}]]
                 </div>
+                <hr class="hr-style"/>
             </div>
 
 
@@ -56,12 +56,12 @@
                 <nav aria-label="Page navigation" th:class="pageStyle">
                     <ul class="pagination">
                         <li th:if="${pageHelper.firstPage}">
-                            <a th:href="@{/?currentPage=}+${pageHelper.homePage}" href="#" aria-label="Previous">
+                            <a th:href="@{/?currentPage=}+${pageHelper.homePage}+${search != null ? '&search='+search : ''}" href="#" aria-label="Previous">
                                 <span aria-hidden="true">首页</span>
                             </a>
                         </li>
                         <li th:if="${pageHelper.previous}" >
-                            <a th:href="@{/?currentPage=}+(${pageHelper.currentPage}-1)" href="#" aria-label="Previous">
+                            <a th:href="@{/?currentPage=}+(${pageHelper.currentPage}-1)+${search != null ? '&search='+search : ''}" href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
@@ -70,16 +70,16 @@
 
                              th:href="@{/?currentPage=}+${number}"
                         -->
-                        <li th:each="number : ${pageHelper.pageNumbers}" th:class="${pageHelper.currentPage == number ? 'active':''}"><a th:href="@{/?currentPage=}+${number}">[[${number}]]</a></li>
+                        <li th:each="number : ${pageHelper.pageNumbers}" th:class="${pageHelper.currentPage == number ? 'active':''}"><a th:href="@{/?currentPage=}+${number}+${search != null ? '&search='+search : ''}">[[${number}]]</a></li>
 
 
                         <li th:if="${pageHelper.next}">
-                            <a th:href="@{/?currentPage=}+(${pageHelper.currentPage}+1)" href="#" aria-label="Next">
+                            <a th:href="@{/?currentPage=}+(${pageHelper.currentPage}+1)+${search != null ? '&search='+search : ''}" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
                         <li th:if="${pageHelper.lastPage}">
-                            <a  th:href="@{/?currentPage=}+${pageHelper.pageCount}" href="#" aria-label="">
+                            <a  th:href="@{/?currentPage=}+${pageHelper.pageCount}+${search != null ? '&search='+search : ''}" href="#" aria-label="">
                                 <span aria-hidden="true">末页</span>
                             </a>
                         </li>
@@ -96,6 +96,7 @@
     </div>
 </div>
 
+<div th:replace="~{footerfragment :: footerFragment}"></div>
 
 </body>
 </html>

@@ -38,7 +38,7 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     @Override
-    public List<QuestionDTO> queryQuestionByPage(Integer currentPage, Integer pageSize) {
+    public List<QuestionDTO> queryQuestionByPage(String search,Integer currentPage, Integer pageSize) {
         /**
          *   假设:  pageSize  为   5
          *
@@ -60,12 +60,12 @@ public class QuestionServiceImpl implements IQuestionService {
 
         int position = (currentPage - 1) * pageSize;
 
-        return questionCustomizeMapper.queryQuestionByPage(position,pageSize);
+        return questionCustomizeMapper.queryQuestionByPage(search,position,pageSize);
     }
 
     @Override
-    public long queryCount() {
-        return questionMapper.countByExample(null);
+    public long queryCount(String search) {
+        return questionCustomizeMapper.queryCount(search);
     }
 
     @Override

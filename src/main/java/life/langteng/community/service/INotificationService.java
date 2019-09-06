@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface INotificationService {
 
-    int getNotificationCountByUserId(int userId);
+    Integer getNotificationCountByUserId();
 
-    List<NotificationDTO> queryNotificationsByUserId(int userId);
+    List<NotificationDTO> queryNotificationsByCurrentUserId();
+
+    void editNotificationStatus(Integer notificationId);
 }

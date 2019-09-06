@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- *
  * 拦截 /error 请求，定制自己的错误页面
  *
  */
@@ -34,6 +33,9 @@ public class CustomizeErrorViewInterceptor implements HandlerInterceptor {
      */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+       if(modelAndView == null){
+           return;
+       }
         Map<String, Object> model = modelAndView.getModel();
         Integer statusCode = (Integer) model.get("status");
         HttpStatus httpStatus = HttpStatus.valueOf(statusCode);

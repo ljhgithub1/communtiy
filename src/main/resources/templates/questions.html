@@ -37,6 +37,7 @@
                     -->
                     [[${question.commentCount}]]评论 [[${question.viewCount}]]阅读 [[${question.likeCount}]]点赞 [[${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm:ss')}]]
                 </div>
+                <hr class="hr-style"/>
             </div>
             <!-- 分页 -->
             <div th:if="${pageHelper != null}" >
@@ -77,15 +78,14 @@
 
         <div class="col-lg-3 col-xs-12 col-sm-12 col-md-12">
             <div class="list-group">
-                <a href="#" class="list-group-item active">我的问题</a>
-                <a href="#" class="list-group-item">我的回复</a>
-                <a href="#" class="list-group-item">其他1</a>
-                <a href="#" class="list-group-item">其他2</a>
+                <a href="/profile/questions" class="list-group-item active">我的问题</a>
+                <a href="/profile/replies" class="list-group-item">我的回复<span class="badge" th:text="${session.notificationCount == null? 0 :session.notificationCount}"></span></a>
             </div>
         </div>
     </div>
 </div>
 
+<div th:replace="~{footerfragment :: footerFragment}"></div>
 
 </body>
 </html>
