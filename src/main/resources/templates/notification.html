@@ -22,13 +22,13 @@
             <!--
              th:each 使用在哪个标签上面，哪个标签及其包含的标签都会进入循环
             -->
-            <div class="media notification" th:each="notification : ${notifications}">
+            <div class="media notification" th:each="notification:${pageHelper.datas}">
                 <div class="media-left">
                     <span th:text="${notification.replyerName}"></span>
                 </div>
                 <div class="media-body">
                     <span th:text="${notification.typeHint}"></span>
-                    <span><a class="a-style" th:href="'/profile/replies/'+${notification.outter}+'?notificationId='+${notification.id}" th:text="${notification.outterTitle}"></a></span>
+                    <span><a class="a-style" th:href="'/profile/question/'+${notification.outter}+'?notificationId='+${notification.id}" th:text="${notification.outterTitle}"></a></span>
                     <span class="label label-danger" th:text="${notification.status == 0 ? '未读':''}"></span>
                 </div>
                 <div class="pull-right reply-hint" th:text="${#dates.format(notification.gmtCreate,'yyyy-MM-dd')}"></div>
@@ -37,40 +37,40 @@
 
 
             <!-- 分页 -->
-            <!--<div th:if="${pageHelper != null}" >-->
-                <!--<nav aria-label="Page navigation" th:class="pageStyle">-->
-                    <!--<ul class="pagination">-->
-                        <!--<li th:if="${pageHelper.firstPage}">-->
-                            <!--<a th:href="@{/profile/questions?currentPage=}+${pageHelper.homePage}" href="#" aria-label="Previous">-->
-                                <!--<span aria-hidden="true">首页</span>-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--<li th:if="${pageHelper.previous}" >-->
-                            <!--<a th:href="@{/profile/questions?currentPage=}+(${pageHelper.currentPage}-1)" href="#" aria-label="Previous">-->
-                                <!--<span aria-hidden="true">&laquo;</span>-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--&lt;!&ndash;-->
-                         <!--thymeleaf 中如何拼接请求地址-->
+            <div th:if="${pageHelper != null}" >
+                <nav aria-label="Page navigation" th:class="pageStyle">
+                    <ul class="pagination">
+                        <li th:if="${pageHelper.firstPage}">
+                            <a th:href="@{/profile/replies?currentPage=}+${pageHelper.homePage}" href="#" aria-label="Previous">
+                                <span aria-hidden="true">首页</span>
+                            </a>
+                        </li>
+                        <li th:if="${pageHelper.previous}" >
+                            <a th:href="@{/profile/replies?currentPage=}+(${pageHelper.currentPage}-1)" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <!--
+                         thymeleaf 中如何拼接请求地址
 
-                             <!--th:href="@{/?currentPage=}+${number}"-->
-                        <!--&ndash;&gt;-->
-                        <!--<li th:each="number : ${pageHelper.pageNumbers}" th:class="${pageHelper.currentPage == number ? 'active':''}"><a th:href="@{/profile/questions?currentPage=}+${number}">[[${number}]]</a></li>-->
+                             th:href="@{/?currentPage=}+${number}"
+                        -->
+                        <li th:each="number : ${pageHelper.pageNumbers}" th:class="${pageHelper.currentPage == number ? 'active':''}"><a th:href="@{/profile/replies?currentPage=}+${number}">[[${number}]]</a></li>
 
 
-                        <!--<li th:if="${pageHelper.next}">-->
-                            <!--<a th:href="@{/profile/questions?currentPage=}+(${pageHelper.currentPage}+1)" href="#" aria-label="Next">-->
-                                <!--<span aria-hidden="true">&raquo;</span>-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--<li th:if="${pageHelper.lastPage}">-->
-                            <!--<a  th:href="@{/profile/questions?currentPage=}+${pageHelper.pageCount}" href="#" aria-label="">-->
-                                <!--<span aria-hidden="true">末页</span>-->
-                            <!--</a>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</nav>-->
-            <!--</div>-->
+                        <li th:if="${pageHelper.next}">
+                            <a th:href="@{/profile/replies?currentPage=}+(${pageHelper.currentPage}+1)" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li th:if="${pageHelper.lastPage}">
+                            <a  th:href="@{/profile/replies?currentPage=}+${pageHelper.pageCount}" href="#" aria-label="">
+                                <span aria-hidden="true">末页</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
 
         <div class="col-lg-3 col-xs-12 col-sm-12 col-md-12">

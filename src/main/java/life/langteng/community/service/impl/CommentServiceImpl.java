@@ -1,16 +1,12 @@
 package life.langteng.community.service.impl;
 
-import life.langteng.community.bean.CommentType;
-import life.langteng.community.bean.NotificationType;
-import life.langteng.community.bean.ResultMap;
+import life.langteng.community.bean.*;
 import life.langteng.community.dto.CommentDTO;
 import life.langteng.community.entity.Comment;
 import life.langteng.community.entity.Notification;
 import life.langteng.community.entity.Question;
 import life.langteng.community.entity.User;
-import life.langteng.community.exception.CommentQuestionNotFoundException;
-import life.langteng.community.exception.CommentResourceNotFoundException;
-import life.langteng.community.exception.CommentTypeNotFountException;
+import life.langteng.community.exception.CommentException;
 import life.langteng.community.mapper.*;
 import life.langteng.community.service.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +16,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.List;
-
-import static life.langteng.community.bean.ErrorMessage.COMMENT_NOT_FOUND;
-import static life.langteng.community.bean.ErrorMessage.COMMENT_QUESTION_NOT_FOUND;
-import static life.langteng.community.bean.ErrorMessage.COMMENT_TYPE_NOT_FOUND;
 
 @Service
 public class CommentServiceImpl implements ICommentService {
@@ -43,12 +35,11 @@ public class CommentServiceImpl implements ICommentService {
     @Autowired
     private NotificationMapper  notificationMapper;
 
-
     @Override
     @Transactional  // 添加事务支持 -- TransactionAspectSupport
     public ResultMap createComment(Comment comment) {
 
-        ResultMap resultMap = new ResultMap(1999);
+        ResultMap resultMap = new ResultMap(ReminderMessage.PARAM_VALID_FAIL.getCode());
 
         // ------------------------------------------------------
         if (comment == null || comment.getContent() == null) {
@@ -67,32 +58,35 @@ public class CommentServiceImpl implements ICommentService {
         }
         // ------------------------------------------------------
 
-        // RequestAttributes 是一个接口，里面定义的属性是public static final的
+        /**
+         * 可以在service中获取 request 和 response的方式
+         */
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 
-        User user = (User)requestAttributes.getAttribute("user", RequestAttributes.SCOPE_SESSION);
+        User user = (User)requestAttributes.getAttribute(InSession.USER_IN_SESSION, RequestAttributes.SCOPE_SESSION);
 
         if (user != null) {
             comment.setCommenter(user.getId());
         }else{
-            resultMap.setMessage("您尚未登录,请先登录!");
-            resultMap.setCode(1998);
+            resultMap.setMessage(ReminderMessage.USER_NOT_LOGIN.getMessage());
+            resultMap.setCode(ReminderMessage.USER_NOT_LOGIN.getCode());
             return resultMap;
         }
 
         /**
-         * parent_id commenter content type
+         * parent_id  commenter  content  type
          *
-         * parent_id  1(问题)  2(回复)
+         * parent_id  1(回复问题)  2(回复评论)
          *
          */
         // 检查参数的有效性 comment == null ? comment.type == null ? comment.parent_id == null ? comment.commenter==null? comment.content==null?
 
-        // 检查 type 是否是   CommentType中存在的
+        // 检查 type 是否是CommentType中存在的
         boolean exist = CommentType.isExist(comment.getType());
         if(!exist){
-            throw new CommentTypeNotFountException(COMMENT_TYPE_NOT_FOUND);
+            throw new CommentException(ReminderMessage.COMMENT_TYPE_NOT_FIND);
         }
+
         // 添加评论 信息
         comment.setLikeCount(0);
         comment.setGmtCreate(System.currentTimeMillis());
@@ -100,10 +94,10 @@ public class CommentServiceImpl implements ICommentService {
         comment.setCommentCount(0);
 
         // 评论问题
-        if(comment.getType() == 1){
+        if(comment.getType() == CommentType.QUESTION_TYPE.getType()){
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
             if(question == null){
-                throw new CommentQuestionNotFoundException(COMMENT_QUESTION_NOT_FOUND);
+                throw new CommentException(ReminderMessage.COMMENT_QUESTION_NOT_FIND);
             }
             // 问题回复数加一
             questionCustomizeMapper.incCommentCount(question.getId(),1);
@@ -114,18 +108,18 @@ public class CommentServiceImpl implements ICommentService {
             notification(question.getId(),question.getCreator(),comment.getCommenter(),NotificationType.COMMENT_QUESTION,question.getTitle());
 
 
-        }else if(comment.getType() == 2){ // 评论回复
+        }else if(comment.getType() == CommentType.COMMENT_TYPE.getType()){ // 评论回复
 
             Comment com = commentMapper.selectByPrimaryKey(comment.getParentId());
 
             if (com == null){
-                throw new CommentResourceNotFoundException(COMMENT_NOT_FOUND);
+                throw new CommentException(ReminderMessage.COMMENT_NOT_FIND);
             }
             // 获取问题，评论的目标评论的问题 ---- 如果有多级评论，那怎么找得到最主要的问题呢？？  建议可以添加一个数据库字段
             Question question = questionMapper.selectByPrimaryKey(com.getParentId());
 
             if (question == null){
-                throw new CommentQuestionNotFoundException(COMMENT_QUESTION_NOT_FOUND);
+                throw new CommentException(ReminderMessage.COMMENT_QUESTION_NOT_FIND);
             }
 
             // 给其父类添加评论数
@@ -136,8 +130,8 @@ public class CommentServiceImpl implements ICommentService {
         }
 
 
-        resultMap.setMessage("回复成功");
-        resultMap.setCode(2000);
+        resultMap.setMessage(ReminderMessage.SUCCESS.getMessage());
+        resultMap.setCode(ReminderMessage.SUCCESS.getCode());
         return resultMap;
     }
 
@@ -176,12 +170,12 @@ public class CommentServiceImpl implements ICommentService {
 
     @Override
     public List<CommentDTO> queryAllQuestionComments(Integer questionId) {
-        return commentCustomizeMapper.queryAllCommentsByParentId(questionId,1);
+        return commentCustomizeMapper.queryAllCommentsByParentId(questionId,CommentType.QUESTION_TYPE.getType());
     }
 
     @Override
     public List<CommentDTO> queryAllCommentComments(Integer commentId) {
-        return commentCustomizeMapper.queryAllCommentsByParentId(commentId,2);
+        return commentCustomizeMapper.queryAllCommentsByParentId(commentId,CommentType.COMMENT_TYPE.getType());
     }
 
 }

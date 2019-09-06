@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2019/8/24
  */
 @Data
-public class GithutUser {
+public class GitHubUserDTO {
 
     private String login;  // 登录用户名
 

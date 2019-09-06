@@ -2,8 +2,10 @@ package life.langteng.community.provider;
 
 import com.alibaba.fastjson.JSON;
 import life.langteng.community.dto.GithubAccessTokenDTO;
-import life.langteng.community.dto.GithutUser;
+import life.langteng.community.dto.GitHubUserDTO;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,16 +14,17 @@ import java.io.IOException;
 /**
  * 提供Github的第三方登录
  *
+ * httpClient --- 了解
  *
- * httpClient
- *
- * okHttp   是一个server内部发起http请求，并获得响应的工具
+ * okHttp   是一个server内部发起http请求，并获得响应的工具 --- 了解
  *
  * @author 宝哥
  * @date 2019/8/24
  */
 @Component
 public class GithubProvider {
+
+    private final Logger logger = LoggerFactory.getLogger(GithubProvider.class);
 
     @Value("${github.url}")
     private  String url;
@@ -36,11 +39,11 @@ public class GithubProvider {
 
     /**
      * 通过 github 回传给我们的code 获取 access_token
-     * @param code
-     * @param state
+     * @param code   必须的
+     * @param state  可选的
      * @return
      */
-    public String getAccess_token(String code,String state){
+    private String getAccess_token(String code,String state){
 
         GithubAccessTokenDTO tokenDTO = new GithubAccessTokenDTO();
 
@@ -52,9 +55,9 @@ public class GithubProvider {
 
         tokenDTO.setState(state);
 
-        // 注意这里的 Redirect_uri 是我们注册 OAuth application 时，指定的url
+        // 注意这里的 Redirect_uri 是我们注册 OAuth application 时，指定的回调的url
         tokenDTO.setRedirect_uri(redirect_uri);
-
+        // 请求类型
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
 
         // 获取 OkHttpClient 对象，并通过该对象发起http请求
@@ -71,7 +74,7 @@ public class GithubProvider {
 
             return  message.split("&")[0].split("=")[1];
         }catch (IOException e){
-            e.printStackTrace();
+            logger.info("OKHttp 发送请求,获取 access token 失败",e);
         }
 
         return null;
@@ -84,7 +87,7 @@ public class GithubProvider {
      * @param access_token
      * @return
      */
-    public GithutUser getGitHubUserInfo(String access_token){
+    private GitHubUserDTO getGitHubUserInfo(String access_token){
 
         String  url = "https://api.github.com/user?access_token="+access_token;
 
@@ -94,14 +97,25 @@ public class GithubProvider {
 
         try{
             Response response = client.newCall(request).execute();
-            return JSON.parseObject(response.body().string(),GithutUser.class);
+            return JSON.parseObject(response.body().string(),GitHubUserDTO.class);
         }catch (IOException e){
-            e.printStackTrace();
+            logger.info("获取用户信息请求失败",e);
         }
 
         return null;
     }
 
+    /**
+     * github 授权
+     * @param code
+     * @param state
+     * @return
+     */
+    public GitHubUserDTO gitHubAuthorization(String code, String state){
+        String accessToken = getAccess_token(code, state);
+        GitHubUserDTO gitHubUserInfo = getGitHubUserInfo(accessToken);
+        return gitHubUserInfo;
+    }
 
 
 }

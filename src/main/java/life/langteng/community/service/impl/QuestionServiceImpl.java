@@ -1,11 +1,11 @@
 package life.langteng.community.service.impl;
 
-import life.langteng.community.bean.ErrorMessage;
+import life.langteng.community.bean.ReminderMessage;
 import life.langteng.community.dto.QuestionDTO;
 import life.langteng.community.entity.Question;
 import life.langteng.community.entity.QuestionExample;
 import life.langteng.community.entity.User;
-import life.langteng.community.exception.QuestionResourceNotFoundException;
+import life.langteng.community.exception.QuestionExcepiton;
 import life.langteng.community.mapper.QuestionCustomizeMapper;
 import life.langteng.community.mapper.QuestionMapper;
 import life.langteng.community.service.IQuestionService;
@@ -27,7 +27,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public boolean createQuestion(Question question) {
-        int insert = questionMapper.insert(question);
+        int insert = questionMapper.insertSelective(question);
         return insert >= 1;
     }
 
@@ -82,7 +82,7 @@ public class QuestionServiceImpl implements IQuestionService {
     public long queryCountByUserId(Integer userId) {
         QuestionExample example = new QuestionExample();
         QuestionExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(userId);
+        criteria.andCreatorEqualTo(userId);
         long count = questionMapper.countByExample(example);
         return count;
     }
@@ -92,7 +92,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
         QuestionDTO question = questionCustomizeMapper.getQuestionDTOById(questionId);
         if(question == null){
-            throw new QuestionResourceNotFoundException(ErrorMessage.QUESTION_NOT_FOUND);
+            throw new QuestionExcepiton(ReminderMessage.QUESTION_NOT_FIND);
         }
         return question;
     }

@@ -13,12 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
+@RequestMapping("/profile") // 表示用户登录后才可以访问的资源
 public class QuestionController {
 
 
@@ -35,10 +37,10 @@ public class QuestionController {
      * 用来展示用户提出的所有问题
      * @return
      */
-    @GetMapping("/profile/questions")
+    @GetMapping("/questions")
     public String userQuestions(HttpServletRequest request,
                                 @RequestParam(name = "currentPage",defaultValue = "1")Integer currentPage,
-                                @RequestParam(name = "pageSize",defaultValue ="5")Integer pageSize,
+                                @RequestParam(name = "pageSize",defaultValue ="8")Integer pageSize,
                                 Model model
                                 ){
         /**
@@ -61,10 +63,7 @@ public class QuestionController {
             currentPage = count;
         }
 
-
         List<QuestionDTO> questions = questionService.getQuestionsByUserId(user.getId(),currentPage,pageSize);
-
-
 
         PageHelperDTO pageHelper = null;
 
@@ -77,9 +76,14 @@ public class QuestionController {
     }
 
 
-
-
-    @GetMapping("/profile/replies/{id}")
+    /**
+     * 评论或者查看一个问题
+     * @param questionId 问题id
+     * @param request
+     * @param notificationId  通知id
+      * @return
+     */
+    @GetMapping("/question/{id}")
     public String userReplies(@PathVariable(name = "id") Integer questionId,
                               HttpServletRequest request,
                               @RequestParam(value = "notificationId",required = false) Integer notificationId){
@@ -96,19 +100,28 @@ public class QuestionController {
 
         questionService.incViewCount(questionId);
 
-
+        /**
+         * 问题的所有评论
+         */
         List<CommentDTO> commentDTOS = commentService.queryAllQuestionComments(questionId);
 
         request.setAttribute("comments",commentDTOS);
 
-
+        /**
+         * 查询该问题
+         */
         QuestionDTO question = questionService.getQuestionById(questionId);
 
         request.setAttribute("question",question);
 
+
+        /**
+         *  标签的相关问题推荐
+         */
         List<QuestionDTO> questionDTOS = questionService.queryTheSameTagQuestions(question);
 
         request.setAttribute("questions",questionDTOS);
+
         return "replies";
     }
 

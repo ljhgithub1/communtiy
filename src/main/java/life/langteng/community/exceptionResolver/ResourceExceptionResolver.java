@@ -1,8 +1,7 @@
 package life.langteng.community.exceptionResolver;
 
 import life.langteng.community.bean.ResultMap;
-import life.langteng.community.exception.CommentResourceNotFoundException;
-import life.langteng.community.exception.ResourceNotFoundException;
+import life.langteng.community.exception.CommunityException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -52,8 +51,8 @@ public class ResourceExceptionResolver {
      *  当然我们可以指定我们需要处理的异常
      *
      */
-    @ExceptionHandler(value = Exception.class)
-    public ModelAndView handlerException( Exception e){
+    @ExceptionHandler(value = Throwable.class)
+    public ModelAndView handlerException( Throwable e){
 
         e.printStackTrace();
         ModelAndView mv = new ModelAndView("error");
@@ -62,15 +61,15 @@ public class ResourceExceptionResolver {
         return mv;
     }
 
-    @ResponseBody
-    @ExceptionHandler(value = CommentResourceNotFoundException.class)
-    public ResultMap handlerCommentException(CommentResourceNotFoundException e){
-        ResultMap resultMap = new ResultMap();
-        resultMap.setCode(e.getCode());
-        resultMap.setMessage(e.getMessage());
-
-        return resultMap;
-    }
+//    @ResponseBody
+//    @ExceptionHandler(value = CommunityException.class)
+//    public ResultMap handlerCommentException(CommunityException e){
+//        ResultMap resultMap = new ResultMap();
+//        resultMap.setCode(e.getCode());
+//        resultMap.setMessage(e.getMessage());
+//
+//        return resultMap;
+//    }
 
 
     /**
@@ -78,8 +77,8 @@ public class ResourceExceptionResolver {
      * @param e
      * @return
      */
-    @ExceptionHandler(value = ResourceNotFoundException.class)
-    public ModelAndView handlerResourceException(Exception e){
+    @ExceptionHandler(value = CommunityException.class)
+    public ModelAndView handlerResourceException(CommunityException e){
         ModelAndView mv = new ModelAndView("error");
 
         String message = e.getMessage();

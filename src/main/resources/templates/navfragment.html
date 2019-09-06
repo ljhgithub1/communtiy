@@ -29,7 +29,7 @@
             <!--登录-->
             <ul class="nav navbar-nav navbar-right">
                 <li th:if="${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=77b3bd8c926cc4119711&redirect_uri=http://localhost:8080/callback&scope=user">登录</a></li>
-                <li th:if="${session.user != null}"><a href="/publish">发起问题</a></li>
+                <li th:if="${session.user != null}"><a href="/profile/publish">发起问题</a></li>
                 <li th:if="${session.user != null}">
                     <a href="/profile/replies">
                         通知 <span class="badge" th:text="${session.notificationCount == null? 0 :session.notificationCount}"></span>

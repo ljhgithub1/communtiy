@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class CommentController {
 
     @Autowired
@@ -28,8 +28,7 @@ public class CommentController {
      *
      * @return
      */
-    @ResponseBody
-    @PostMapping("/comment")
+    @PostMapping("/profile/comment")
     public ResultMap comment(@RequestBody Comment comment){
 
         ResultMap resultMap = commentService.createComment(comment);
@@ -37,9 +36,14 @@ public class CommentController {
         return resultMap;
     }
 
-    @ResponseBody
-    @GetMapping("/subComment")
-    public ResultMap subComments(@RequestParam("commentId") Integer commentId){
+    /**
+     * 查询所有的子评论
+     *
+     * @param commentId  父评论的id
+     * @return
+     */
+    @GetMapping("/listSubComment")
+    public ResultMap listSubComment(@RequestParam("commentId") Integer commentId){
 
         List<CommentDTO> commentDTOS = commentService.queryAllCommentComments(commentId);
         ResultMap resultMap = new ResultMap(2000);

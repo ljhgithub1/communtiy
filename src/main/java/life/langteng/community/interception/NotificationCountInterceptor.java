@@ -1,5 +1,6 @@
 package life.langteng.community.interception;
 
+import life.langteng.community.bean.InSession;
 import life.langteng.community.service.INotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,11 +19,19 @@ public class NotificationCountInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Integer notificationCount = (Integer) request.getSession().getAttribute("notificationCount");
+
+        // 如果用户都没有登录，就不用去获取通知数量信息了
+        if (request.getSession().getAttribute(InSession.USER_IN_SESSION) == null) {
+            return true;
+        }
+
+        Integer notificationCount = (Integer) request.getSession().getAttribute(InSession.NOTIFICATION_COUNT_IN_SESSION);
 
         if (notificationCount == null) {
             Integer count = notificationService.getNotificationCountByUserId();
-            request.getSession().setAttribute("notificationCount",count);
+            if(count != null){
+                request.getSession().setAttribute(InSession.NOTIFICATION_COUNT_IN_SESSION,count);
+            }
         }
 
         return true;

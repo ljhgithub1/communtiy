@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -16,10 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * 所有的方法都以json的格式传递出去
  */
-@Controller
+@RestController
+@RequestMapping("/file")
 public class FileUploadController {
-
-    private final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
     @Autowired
     private IFileUploadService fileUploadService;
@@ -29,8 +29,7 @@ public class FileUploadController {
      * @param multipartFile
      * @return
      */
-    @RequestMapping("/file/upload")
-    @ResponseBody
+    @RequestMapping("/upload")
     public FileUploadDTO fileUpload(@RequestParam("editormd-image-file") MultipartFile multipartFile){
 
         FileUploadDTO fileUploadDTO = fileUploadService.fileUpload(multipartFile);

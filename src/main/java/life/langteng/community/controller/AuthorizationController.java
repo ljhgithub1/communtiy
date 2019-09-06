@@ -1,16 +1,11 @@
 package life.langteng.community.controller;
 
-import life.langteng.community.dto.GithutUser;
+import life.langteng.community.dto.GitHubUserDTO;
 import life.langteng.community.entity.User;
 import life.langteng.community.provider.GithubProvider;
 import life.langteng.community.service.IUserService;
-import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpCookie;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,7 +13,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 /**
  * github 认证登录
@@ -51,15 +45,12 @@ public class AuthorizationController {
      * @param code
      */
     @RequestMapping("/callback")
-    public String callback(@RequestParam(name = "code",required = true) String code,
+    public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state",required = false) String state,
                            HttpServletRequest request,
                            HttpServletResponse response){
-        // 获取access_token
-        String access_token = githubProvider.getAccess_token(code, state);
-        // 通过access_token 获取 用户信息
-        GithutUser gitHubUserInfo = githubProvider.getGitHubUserInfo(access_token);
-
+        // github 授权
+        GitHubUserDTO gitHubUserInfo = githubProvider.gitHubAuthorization(code, state);
 
         User user = userService.githubUser2User(gitHubUserInfo);
 
@@ -77,7 +68,12 @@ public class AuthorizationController {
     }
 
 
-
+    /**
+     * 退出登录
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request,HttpServletResponse response){
 
@@ -86,7 +82,7 @@ public class AuthorizationController {
         session.removeAttribute("user");
 
         // 新建一个同名的cookie，然后设置其有效时间为0,相当于删除了cookie
-        Cookie cookie = new Cookie("token",null);
+        Cookie cookie = new Cookie(token,null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
 

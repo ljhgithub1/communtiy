@@ -11,10 +11,12 @@
 </head>
 <body>
 <script type="text/javascript">
+    // 在文档加载后执行该方法
     window.onload = function(){
         var value = window.localStorage.getItem("closeable");
         if(value == "true"){
             window.close();
+            // 手动删除，不然不会被删除
             window.localStorage.removeItem("closeable");
         }
     }
@@ -31,7 +33,7 @@
             <!--
              th:each 使用在哪个标签上面，哪个标签及其包含的标签都会进入循环
             -->
-            <div class="media" th:each="question:${pageHelper.questions}" th:if="${pageHelper != null}">
+            <div class="media" th:each="question:${pageHelper.datas}" th:if="${pageHelper != null}">
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" src="https://avatars1.githubusercontent.com/u/48481596?v=4" alt="avatar">
@@ -39,7 +41,7 @@
                 </div>
                 <div class="media-body">
                     <!-- 问题题目 -->
-                    <h4 class="media-heading"><a th:href="@{profile/replies/}+${question.id}" th:text="${question.title}">看视频不仅仅是为了学习</a></h4>
+                    <h4 class="media-heading"><a th:href="@{profile/question/}+${question.id}" th:text="${question.title}">看视频不仅仅是为了学习</a></h4>
                     <!-- 阅读数、点赞数、发布时间 -->
                     <!--
                       使用 thymeleaf 的 dates.format 工具方法 , 第一个参数如果需要从request中获取，或者使用其他工具类，都不在需要加 ${},加了会报错

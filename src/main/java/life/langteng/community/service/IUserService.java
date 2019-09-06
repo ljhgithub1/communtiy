@@ -1,6 +1,6 @@
 package life.langteng.community.service;
 
-import life.langteng.community.dto.GithutUser;
+import life.langteng.community.dto.GitHubUserDTO;
 import life.langteng.community.entity.User;
 
 public interface IUserService {
@@ -10,7 +10,7 @@ public interface IUserService {
      * @param githutUser
      * @return
      */
-    User githubUser2User(GithutUser githutUser);
+    User githubUser2User(GitHubUserDTO githutUser);
 
     /**
      * 添加用户信息

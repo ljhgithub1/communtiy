@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * 发布的控制器
  */
 @Controller
+@RequestMapping("/profile")
 public class PublishController {
 
     @Autowired
@@ -43,8 +44,7 @@ public class PublishController {
      */
     @PostMapping("/publish")
     public String doPublish(Question question,HttpServletRequest request, Model model){
-
-
+        // 用来做回显
         model.addAttribute("question",question);
 
         /**

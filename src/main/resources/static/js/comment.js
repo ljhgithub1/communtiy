@@ -17,7 +17,7 @@ function show_second_comment(e) {
         e.setAttribute("data-status",1);
         // 通过ajax去获取服务端的数据
         $.ajax({
-            url:"/subComment",
+            url:"/listSubComment",
             type:"get",
             data:{"commentId":id},
             success:function (data) {
@@ -136,7 +136,7 @@ function commentQuestion() {
 // 评论的公共方法
 function comment(parentId,content,type){
     $.ajax({
-        url: "/comment",
+        url: "/profile/comment",
         type: "post",
         contentType: "application/json",
         data: JSON.stringify({"parentId": parentId, "content": content, "type": type}), // 将string转换成json
@@ -145,7 +145,7 @@ function comment(parentId,content,type){
             // 回复成功
             if (resultMap.code == 2000) {
                 window.location.reload(); // 从新刷新页面
-            } else if (resultMap.code == 1998) {
+            } else if (resultMap.code == 3001) {
                 // 未登录状态
                 var conf = confirm(resultMap.message);  //带有确认的提示框
                 if (conf) {

@@ -4,6 +4,8 @@ import life.langteng.community.dto.PageHelperDTO;
 import life.langteng.community.dto.QuestionDTO;
 import life.langteng.community.entity.User;
 import life.langteng.community.service.IQuestionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +23,17 @@ public class IndexController {
 
     /**
      * 默认到index页面
+     * @param request
+     * @param search   添加查询
+     * @param currentPage  当前页
+     * @param pageSize     每页数据大小
      * @return
      */
     @RequestMapping("/")
     public String index(HttpServletRequest request,
                         @RequestParam(name = "search",required = false) String search,
                         @RequestParam(name = "currentPage",defaultValue = "1") Integer currentPage,
-                        @RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize){
+                        @RequestParam(name = "pageSize",defaultValue = "8") Integer pageSize){
 
         if (search != null && search.trim().equals("")) {
             search = null;
@@ -63,7 +69,7 @@ public class IndexController {
 
         List<QuestionDTO> questions = questionService.queryQuestionByPage(search,currentPage,pageSize);
 
-        PageHelperDTO  pageHelperDTO = null;
+        PageHelperDTO<QuestionDTO>  pageHelperDTO = null;
 
         if (total != 0) {
             pageHelperDTO = new PageHelperDTO(questions, currentPage, pageSize, total);
@@ -73,15 +79,4 @@ public class IndexController {
 
         return "index";
     }
-
-
-    @RequestMapping("/userInfo")
-    @ResponseBody
-    public User getUserInfo(HttpServletRequest request){
-
-        User user = (User)request.getSession().getAttribute("user");
-
-        return null;
-    }
-
 }

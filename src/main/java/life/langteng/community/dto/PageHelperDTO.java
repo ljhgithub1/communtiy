@@ -9,7 +9,7 @@ import java.util.List;
  * 分页
  */
 @Data
-public class PageHelperDTO {
+public class PageHelperDTO<T> {
 
     private static final Integer FIRST_PAGE = 1;
 
@@ -21,7 +21,7 @@ public class PageHelperDTO {
     /**
      * 该页需要展示的数据
      */
-    private List<QuestionDTO> questions;
+    private List<T> datas;
 
     /**
      * 所有展示的页数 如: 1234567  2345678 ...
@@ -60,17 +60,17 @@ public class PageHelperDTO {
 
 
     /**
-     * @param questions   该页需要展示的数据
+     * @param datas   该页需要展示的数据
      * @param currentPage 当前页
      * @param pageSize    每页最多有多少条数据
      * @param total       一共有多少条数据
      */
-    public PageHelperDTO(List<QuestionDTO> questions,Integer currentPage,Integer pageSize,Integer total){
+    public PageHelperDTO(List<T> datas,Integer currentPage,Integer pageSize,Integer total){
 
         /**
          * 这里暂时不校验数据
          */
-        this.questions = questions;
+        this.datas = datas;
         this.currentPage = currentPage;
         this.pageCount = ((total % pageSize == 0) ? (total / pageSize) : (total / pageSize +1));
 
