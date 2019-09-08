@@ -33,16 +33,16 @@ public class CustomizeErrorViewInterceptor implements HandlerInterceptor {
      */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-       if(modelAndView == null){
-           return;
-       }
-        Map<String, Object> model = modelAndView.getModel();
-        Integer statusCode = (Integer) model.get("status");
-        HttpStatus httpStatus = HttpStatus.valueOf(statusCode);
-        // 如果是 4xx 那么就是客户端问题
-        if(httpStatus.is4xxClientError()){
-            model.put("message","你的请求方式不对，要不换个姿势!");
-        }
+//       if(modelAndView == null){
+//           return;
+//       }
+//        Map<String, Object> model = modelAndView.getModel();
+//        Integer statusCode = (Integer) model.get("status");
+//        HttpStatus httpStatus = HttpStatus.valueOf(statusCode);
+//        // 如果是 4xx 那么就是客户端问题
+//        if(httpStatus.is4xxClientError()){
+//            model.put("message","你的请求方式不对，要不换个姿势!");
+//        }
     }
 
     @Override

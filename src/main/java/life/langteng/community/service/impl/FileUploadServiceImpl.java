@@ -28,7 +28,11 @@ public class FileUploadServiceImpl implements IFileUploadService {
 
         String fileName = uuid + "-" + file.getOriginalFilename();
 
+        //  这里有点问题
+
         String filePath = "E:\\WorkSpace\\study\\Community\\src\\main\\resources\\static\\images\\" + fileName;
+
+
 
         File f = new File(filePath);
 
